@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\MailAttachmentDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateMailAttachmentRequest;
 use App\Http\Requests\UpdateMailAttachmentRequest;
 use App\Repositories\MailAttachmentRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class MailAttachmentController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class MailAttachmentController extends AppBaseController
      * Display a listing of the MailAttachment.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $mailAttachments = $this->mailAttachmentRepository->all();
-
-        return view('mail_attachments.index')
-            ->with('mailAttachments', $mailAttachments);
+        if ($request->ajax()) {
+            return Datatables::of((new MailAttachmentDataTable())->get())->make(true);
+        }
+    
+        return view('mail_attachments.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class MailAttachmentController extends AppBaseController
     /**
      * Display the specified MailAttachment.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class MailAttachmentController extends AppBaseController
     /**
      * Show the form for editing the specified MailAttachment.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class MailAttachmentController extends AppBaseController
     /**
      * Update the specified MailAttachment in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateMailAttachmentRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class MailAttachmentController extends AppBaseController
     /**
      * Remove the specified MailAttachment from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class MailAttachmentController extends AppBaseController
     {
         $mailAttachment = $this->mailAttachmentRepository->find($id);
 
-        if (empty($mailAttachment)) {
-            Flash::error('Mail Attachment not found');
+        $mailAttachment->delete();
 
-            return redirect(route('mailAttachments.index'));
-        }
-
-        $this->mailAttachmentRepository->delete($id);
-
-        Flash::success('Mail Attachment deleted successfully.');
-
-        return redirect(route('mailAttachments.index'));
+        return $this->sendSuccess('Mail Attachment deleted successfully.');
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Document
  * @package App\Models
- * @version March 11, 2021, 11:00 am UTC
+ * @version March 11, 2021, 1:18 pm UTC
  *
  * @property \App\Models\File $file
  * @property \App\Models\Project $project

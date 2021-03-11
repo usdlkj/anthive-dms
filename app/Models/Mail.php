@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Mail
  * @package App\Models
- * @version March 11, 2021, 11:02 am UTC
+ * @version March 11, 2021, 2:19 pm UTC
  *
  * @property \App\Models\MailType $mailType
  * @property \App\Models\User $sender
@@ -83,7 +83,8 @@ class Mail extends Model
         'subject' => 'required|string|max:255',
         'message' => 'nullable|string',
         'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'updated_at' => 'nullable',
+        'deleted_at' => 'nullable'
     ];
 
     /**

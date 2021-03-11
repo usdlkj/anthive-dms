@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class MailType
  * @package App\Models
- * @version March 11, 2021, 11:02 am UTC
+ * @version March 11, 2021, 2:15 pm UTC
  *
  * @property \App\Models\Project $project
  * @property \Illuminate\Database\Eloquent\Collection $mails

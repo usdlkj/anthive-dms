@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\FileDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateFileRequest;
 use App\Http\Requests\UpdateFileRequest;
 use App\Repositories\FileRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class FileController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class FileController extends AppBaseController
      * Display a listing of the File.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $files = $this->fileRepository->all();
-
-        return view('files.index')
-            ->with('files', $files);
+        if ($request->ajax()) {
+            return Datatables::of((new FileDataTable())->get())->make(true);
+        }
+    
+        return view('files.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class FileController extends AppBaseController
     /**
      * Display the specified File.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class FileController extends AppBaseController
     /**
      * Show the form for editing the specified File.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class FileController extends AppBaseController
     /**
      * Update the specified File in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateFileRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class FileController extends AppBaseController
     /**
      * Remove the specified File from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class FileController extends AppBaseController
     {
         $file = $this->fileRepository->find($id);
 
-        if (empty($file)) {
-            Flash::error('File not found');
+        $file->delete();
 
-            return redirect(route('files.index'));
-        }
-
-        $this->fileRepository->delete($id);
-
-        Flash::success('File deleted successfully.');
-
-        return redirect(route('files.index'));
+        return $this->sendSuccess('File deleted successfully.');
     }
 }

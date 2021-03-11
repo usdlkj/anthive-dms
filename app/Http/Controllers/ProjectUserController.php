@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ProjectUserDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateProjectUserRequest;
 use App\Http\Requests\UpdateProjectUserRequest;
 use App\Repositories\ProjectUserRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class ProjectUserController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class ProjectUserController extends AppBaseController
      * Display a listing of the ProjectUser.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $projectUsers = $this->projectUserRepository->all();
-
-        return view('project_users.index')
-            ->with('projectUsers', $projectUsers);
+        if ($request->ajax()) {
+            return Datatables::of((new ProjectUserDataTable())->get())->make(true);
+        }
+    
+        return view('project_users.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class ProjectUserController extends AppBaseController
     /**
      * Display the specified ProjectUser.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class ProjectUserController extends AppBaseController
     /**
      * Show the form for editing the specified ProjectUser.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class ProjectUserController extends AppBaseController
     /**
      * Update the specified ProjectUser in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateProjectUserRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class ProjectUserController extends AppBaseController
     /**
      * Remove the specified ProjectUser from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class ProjectUserController extends AppBaseController
     {
         $projectUser = $this->projectUserRepository->find($id);
 
-        if (empty($projectUser)) {
-            Flash::error('Project User not found');
+        $projectUser->delete();
 
-            return redirect(route('projectUsers.index'));
-        }
-
-        $this->projectUserRepository->delete($id);
-
-        Flash::success('Project User deleted successfully.');
-
-        return redirect(route('projectUsers.index'));
+        return $this->sendSuccess('Project User deleted successfully.');
     }
 }

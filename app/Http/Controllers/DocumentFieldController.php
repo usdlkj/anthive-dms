@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\DocumentFieldDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateDocumentFieldRequest;
 use App\Http\Requests\UpdateDocumentFieldRequest;
 use App\Repositories\DocumentFieldRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class DocumentFieldController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class DocumentFieldController extends AppBaseController
      * Display a listing of the DocumentField.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $documentFields = $this->documentFieldRepository->all();
-
-        return view('document_fields.index')
-            ->with('documentFields', $documentFields);
+        if ($request->ajax()) {
+            return Datatables::of((new DocumentFieldDataTable())->get())->make(true);
+        }
+    
+        return view('document_fields.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class DocumentFieldController extends AppBaseController
     /**
      * Display the specified DocumentField.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class DocumentFieldController extends AppBaseController
     /**
      * Show the form for editing the specified DocumentField.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class DocumentFieldController extends AppBaseController
     /**
      * Update the specified DocumentField in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateDocumentFieldRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class DocumentFieldController extends AppBaseController
     /**
      * Remove the specified DocumentField from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class DocumentFieldController extends AppBaseController
     {
         $documentField = $this->documentFieldRepository->find($id);
 
-        if (empty($documentField)) {
-            Flash::error('Document Field not found');
+        $documentField->delete();
 
-            return redirect(route('documentFields.index'));
-        }
-
-        $this->documentFieldRepository->delete($id);
-
-        Flash::success('Document Field deleted successfully.');
-
-        return redirect(route('documentFields.index'));
+        return $this->sendSuccess('Document Field deleted successfully.');
     }
 }

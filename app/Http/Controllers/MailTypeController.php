@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\MailTypeDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateMailTypeRequest;
 use App\Http\Requests\UpdateMailTypeRequest;
 use App\Repositories\MailTypeRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class MailTypeController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class MailTypeController extends AppBaseController
      * Display a listing of the MailType.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $mailTypes = $this->mailTypeRepository->all();
-
-        return view('mail_types.index')
-            ->with('mailTypes', $mailTypes);
+        if ($request->ajax()) {
+            return Datatables::of((new MailTypeDataTable())->get())->make(true);
+        }
+    
+        return view('mail_types.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class MailTypeController extends AppBaseController
     /**
      * Display the specified MailType.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class MailTypeController extends AppBaseController
     /**
      * Show the form for editing the specified MailType.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class MailTypeController extends AppBaseController
     /**
      * Update the specified MailType in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateMailTypeRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class MailTypeController extends AppBaseController
     /**
      * Remove the specified MailType from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class MailTypeController extends AppBaseController
     {
         $mailType = $this->mailTypeRepository->find($id);
 
-        if (empty($mailType)) {
-            Flash::error('Mail Type not found');
+        $mailType->delete();
 
-            return redirect(route('mailTypes.index'));
-        }
-
-        $this->mailTypeRepository->delete($id);
-
-        Flash::success('Mail Type deleted successfully.');
-
-        return redirect(route('mailTypes.index'));
+        return $this->sendSuccess('Mail Type deleted successfully.');
     }
 }

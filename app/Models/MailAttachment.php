@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Eloquent as Model;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class MailAttachment
  * @package App\Models
- * @version March 11, 2021, 11:03 am UTC
+ * @version March 11, 2021, 2:23 pm UTC
  *
  * @property \App\Models\Mail $mail
  * @property integer $mail_id
@@ -17,15 +18,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class MailAttachment extends Model
 {
+
     use HasFactory;
 
     public $table = 'mail_attachments';
     
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    public $timestamps = false;
 
-
-    protected $dates = ['deleted_at'];
 
 
 

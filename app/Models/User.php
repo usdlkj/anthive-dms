@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -9,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * Class User
  * @package App\Models
- * @version March 11, 2021, 10:58 am UTC
+ * @version March 11, 2021, 12:38 pm UTC
  *
  * @property \App\Models\Company $company
  * @property \Illuminate\Database\Eloquent\Collection $mails

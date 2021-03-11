@@ -2,6 +2,9 @@
 @section('title')
     Project Fields 
 @endsection
+@section('css')
+    <link href="{{ asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
+@endsection
 @section('content')
     <section class="section">
         <div class="section-header">
@@ -10,14 +13,21 @@
                 <a href="{{ route('projectFields.create')}}" class="btn btn-primary form-btn">Project Field <i class="fas fa-plus"></i></a>
             </div>
         </div>
-    <div class="section-body">
-       <div class="card">
-            <div class="card-body">
-                @include('project_fields.table')
+        <div class="section-body">
+            <div class="card">
+                <div class="card-body">
+                    @include('project_fields.table')
+                    @include('project_fields.templates.templates')
+                </div>
             </div>
-       </div>
-   </div>
-    
+        </div>
     </section>
 @endsection
-
+@section('scripts')
+    <script>
+        let recordsURL = "{{ route('projectFields.index') }}/";
+    </script>
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>
+    <script src="{{mix('assets/js/project_fields/project_fields.js')}}"></script>
+@endsection

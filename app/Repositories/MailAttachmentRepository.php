@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class MailAttachmentRepository
  * @package App\Repositories
- * @version March 11, 2021, 11:03 am UTC
+ * @version March 11, 2021, 2:23 pm UTC
 */
 
 class MailAttachmentRepository extends BaseRepository

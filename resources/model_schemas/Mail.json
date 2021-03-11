@@ -132,6 +132,18 @@
         "inView": false
     },
     {
+        "name": "deleted_at",
+        "dbType": "datetime:nullable",
+        "htmlType": "date",
+        "validations": "nullable|nullable",
+        "searchable": false,
+        "fillable": false,
+        "primary": false,
+        "inForm": false,
+        "inIndex": false,
+        "inView": false
+    },
+    {
         "type": "relation",
         "relation": "mt1,MailType,mail_type_id"
     },

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\DocumentDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
 use App\Repositories\DocumentRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class DocumentController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class DocumentController extends AppBaseController
      * Display a listing of the Document.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $documents = $this->documentRepository->all();
-
-        return view('documents.index')
-            ->with('documents', $documents);
+        if ($request->ajax()) {
+            return Datatables::of((new DocumentDataTable())->get())->make(true);
+        }
+    
+        return view('documents.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class DocumentController extends AppBaseController
     /**
      * Display the specified Document.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class DocumentController extends AppBaseController
     /**
      * Show the form for editing the specified Document.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class DocumentController extends AppBaseController
     /**
      * Update the specified Document in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateDocumentRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class DocumentController extends AppBaseController
     /**
      * Remove the specified Document from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class DocumentController extends AppBaseController
     {
         $document = $this->documentRepository->find($id);
 
-        if (empty($document)) {
-            Flash::error('Document not found');
+        $document->delete();
 
-            return redirect(route('documents.index'));
-        }
-
-        $this->documentRepository->delete($id);
-
-        Flash::success('Document deleted successfully.');
-
-        return redirect(route('documents.index'));
+        return $this->sendSuccess('Document deleted successfully.');
     }
 }

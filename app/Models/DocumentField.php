@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Eloquent as Model;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class DocumentField
  * @package App\Models
- * @version March 11, 2021, 11:01 am UTC
+ * @version March 11, 2021, 2:13 pm UTC
  *
  * @property \App\Models\Document $document
  * @property integer $document_id
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class DocumentField extends Model
 {
+
     use HasFactory;
 
     public $table = 'document_fields';
@@ -24,8 +26,6 @@ class DocumentField extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
 
 
 

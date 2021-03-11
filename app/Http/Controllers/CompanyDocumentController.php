@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\CompanyDocumentDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateCompanyDocumentRequest;
 use App\Http\Requests\UpdateCompanyDocumentRequest;
 use App\Repositories\CompanyDocumentRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class CompanyDocumentController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class CompanyDocumentController extends AppBaseController
      * Display a listing of the CompanyDocument.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $companyDocuments = $this->companyDocumentRepository->all();
-
-        return view('company_documents.index')
-            ->with('companyDocuments', $companyDocuments);
+        if ($request->ajax()) {
+            return Datatables::of((new CompanyDocumentDataTable())->get())->make(true);
+        }
+    
+        return view('company_documents.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class CompanyDocumentController extends AppBaseController
     /**
      * Display the specified CompanyDocument.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class CompanyDocumentController extends AppBaseController
     /**
      * Show the form for editing the specified CompanyDocument.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class CompanyDocumentController extends AppBaseController
     /**
      * Update the specified CompanyDocument in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateCompanyDocumentRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class CompanyDocumentController extends AppBaseController
     /**
      * Remove the specified CompanyDocument from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class CompanyDocumentController extends AppBaseController
     {
         $companyDocument = $this->companyDocumentRepository->find($id);
 
-        if (empty($companyDocument)) {
-            Flash::error('Company Document not found');
+        $companyDocument->delete();
 
-            return redirect(route('companyDocuments.index'));
-        }
-
-        $this->companyDocumentRepository->delete($id);
-
-        Flash::success('Company Document deleted successfully.');
-
-        return redirect(route('companyDocuments.index'));
+        return $this->sendSuccess('Company Document deleted successfully.');
     }
 }

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\UserDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class UserController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class UserController extends AppBaseController
      * Display a listing of the User.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $users = $this->userRepository->all();
-
-        return view('users.index')
-            ->with('users', $users);
+        if ($request->ajax()) {
+            return Datatables::of((new UserDataTable())->get())->make(true);
+        }
+    
+        return view('users.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class UserController extends AppBaseController
     /**
      * Display the specified User.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class UserController extends AppBaseController
     /**
      * Show the form for editing the specified User.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class UserController extends AppBaseController
     /**
      * Update the specified User in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateUserRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class UserController extends AppBaseController
     /**
      * Remove the specified User from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class UserController extends AppBaseController
     {
         $user = $this->userRepository->find($id);
 
-        if (empty($user)) {
-            Flash::error('User not found');
+        $user->delete();
 
-            return redirect(route('users.index'));
-        }
-
-        $this->userRepository->delete($id);
-
-        Flash::success('User deleted successfully.');
-
-        return redirect(route('users.index'));
+        return $this->sendSuccess('User deleted successfully.');
     }
 }

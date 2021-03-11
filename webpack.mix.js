@@ -65,3 +65,45 @@ mix.babel('node_modules/sweetalert/dist/sweetalert.min.js',
     'public/assets/js/sweetalert.min.js');
 mix.babel('node_modules/izitoast/dist/js/iziToast.min.js',
     'public/assets/js/iziToast.min.js');
+
+
+ mix.js('resources/assets/js/companies/companies.js', 'public/assets/js/companies/companies.js').version();
+
+
+ mix.js('resources/assets/js/users/users.js', 'public/assets/js/users/users.js').version();
+
+
+ mix.js('resources/assets/js/projects/projects.js', 'public/assets/js/projects/projects.js').version();
+
+
+ mix.js('resources/assets/js/project_fields/project_fields.js', 'public/assets/js/project_fields/project_fields.js').version();
+
+
+ mix.js('resources/assets/js/project_user/project_user.js', 'public/assets/js/project_user/project_user.js').version();
+
+
+ mix.js('resources/assets/js/select_values/select_values.js', 'public/assets/js/select_values/select_values.js').version();
+
+
+ mix.js('resources/assets/js/files/files.js', 'public/assets/js/files/files.js').version();
+
+
+ mix.js('resources/assets/js/documents/documents.js', 'public/assets/js/documents/documents.js').version();
+
+
+ mix.js('resources/assets/js/company_document/company_document.js', 'public/assets/js/company_document/company_document.js').version();
+
+
+ mix.js('resources/assets/js/document_fields/document_fields.js', 'public/assets/js/document_fields/document_fields.js').version();
+
+
+ mix.js('resources/assets/js/mail_types/mail_types.js', 'public/assets/js/mail_types/mail_types.js').version();
+
+
+ mix.js('resources/assets/js/mails/mails.js', 'public/assets/js/mails/mails.js').version();
+
+
+ mix.js('resources/assets/js/mail_user/mail_user.js', 'public/assets/js/mail_user/mail_user.js').version();
+
+
+ mix.js('resources/assets/js/mail_attachments/mail_attachments.js', 'public/assets/js/mail_attachments/mail_attachments.js').version();

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ProjectFieldDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateProjectFieldRequest;
 use App\Http\Requests\UpdateProjectFieldRequest;
 use App\Repositories\ProjectFieldRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class ProjectFieldController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class ProjectFieldController extends AppBaseController
      * Display a listing of the ProjectField.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $projectFields = $this->projectFieldRepository->all();
-
-        return view('project_fields.index')
-            ->with('projectFields', $projectFields);
+        if ($request->ajax()) {
+            return Datatables::of((new ProjectFieldDataTable())->get())->make(true);
+        }
+    
+        return view('project_fields.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class ProjectFieldController extends AppBaseController
     /**
      * Display the specified ProjectField.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class ProjectFieldController extends AppBaseController
     /**
      * Show the form for editing the specified ProjectField.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class ProjectFieldController extends AppBaseController
     /**
      * Update the specified ProjectField in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateProjectFieldRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class ProjectFieldController extends AppBaseController
     /**
      * Remove the specified ProjectField from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class ProjectFieldController extends AppBaseController
     {
         $projectField = $this->projectFieldRepository->find($id);
 
-        if (empty($projectField)) {
-            Flash::error('Project Field not found');
+        $projectField->delete();
 
-            return redirect(route('projectFields.index'));
-        }
-
-        $this->projectFieldRepository->delete($id);
-
-        Flash::success('Project Field deleted successfully.');
-
-        return redirect(route('projectFields.index'));
+        return $this->sendSuccess('Project Field deleted successfully.');
     }
 }

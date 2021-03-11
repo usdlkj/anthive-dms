@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\MailUserDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateMailUserRequest;
 use App\Http\Requests\UpdateMailUserRequest;
 use App\Repositories\MailUserRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class MailUserController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class MailUserController extends AppBaseController
      * Display a listing of the MailUser.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $mailUsers = $this->mailUserRepository->all();
-
-        return view('mail_users.index')
-            ->with('mailUsers', $mailUsers);
+        if ($request->ajax()) {
+            return Datatables::of((new MailUserDataTable())->get())->make(true);
+        }
+    
+        return view('mail_users.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class MailUserController extends AppBaseController
     /**
      * Display the specified MailUser.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class MailUserController extends AppBaseController
     /**
      * Show the form for editing the specified MailUser.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class MailUserController extends AppBaseController
     /**
      * Update the specified MailUser in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateMailUserRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class MailUserController extends AppBaseController
     /**
      * Remove the specified MailUser from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class MailUserController extends AppBaseController
     {
         $mailUser = $this->mailUserRepository->find($id);
 
-        if (empty($mailUser)) {
-            Flash::error('Mail User not found');
+        $mailUser->delete();
 
-            return redirect(route('mailUsers.index'));
-        }
-
-        $this->mailUserRepository->delete($id);
-
-        Flash::success('Mail User deleted successfully.');
-
-        return redirect(route('mailUsers.index'));
+        return $this->sendSuccess('Mail User deleted successfully.');
     }
 }

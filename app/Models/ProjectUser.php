@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class ProjectUser
  * @package App\Models
- * @version March 11, 2021, 10:59 am UTC
+ * @version March 11, 2021, 12:51 pm UTC
  *
  * @property \App\Models\Project $project
  * @property \App\Models\User $user

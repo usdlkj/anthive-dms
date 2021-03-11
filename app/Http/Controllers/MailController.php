@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\MailDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateMailRequest;
 use App\Http\Requests\UpdateMailRequest;
 use App\Repositories\MailRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class MailController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class MailController extends AppBaseController
      * Display a listing of the Mail.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $mails = $this->mailRepository->all();
-
-        return view('mails.index')
-            ->with('mails', $mails);
+        if ($request->ajax()) {
+            return Datatables::of((new MailDataTable())->get())->make(true);
+        }
+    
+        return view('mails.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class MailController extends AppBaseController
     /**
      * Display the specified Mail.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class MailController extends AppBaseController
     /**
      * Show the form for editing the specified Mail.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class MailController extends AppBaseController
     /**
      * Update the specified Mail in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateMailRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class MailController extends AppBaseController
     /**
      * Remove the specified Mail from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class MailController extends AppBaseController
     {
         $mail = $this->mailRepository->find($id);
 
-        if (empty($mail)) {
-            Flash::error('Mail not found');
+        $mail->delete();
 
-            return redirect(route('mails.index'));
-        }
-
-        $this->mailRepository->delete($id);
-
-        Flash::success('Mail deleted successfully.');
-
-        return redirect(route('mails.index'));
+        return $this->sendSuccess('Mail deleted successfully.');
     }
 }

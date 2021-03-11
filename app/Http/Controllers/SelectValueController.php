@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\SelectValueDataTable;
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\Http\Requests\CreateSelectValueRequest;
 use App\Http\Requests\UpdateSelectValueRequest;
 use App\Repositories\SelectValueRepository;
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Flash;
+use App\Http\Controllers\AppBaseController;
 use Response;
+use Datatables;
 
 class SelectValueController extends AppBaseController
 {
@@ -24,15 +27,15 @@ class SelectValueController extends AppBaseController
      * Display a listing of the SelectValue.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function index(Request $request)
     {
-        $selectValues = $this->selectValueRepository->all();
-
-        return view('select_values.index')
-            ->with('selectValues', $selectValues);
+        if ($request->ajax()) {
+            return Datatables::of((new SelectValueDataTable())->get())->make(true);
+        }
+    
+        return view('select_values.index');
     }
 
     /**
@@ -66,7 +69,7 @@ class SelectValueController extends AppBaseController
     /**
      * Display the specified SelectValue.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -86,7 +89,7 @@ class SelectValueController extends AppBaseController
     /**
      * Show the form for editing the specified SelectValue.
      *
-     * @param int $id
+     * @param  int $id
      *
      * @return Response
      */
@@ -106,7 +109,7 @@ class SelectValueController extends AppBaseController
     /**
      * Update the specified SelectValue in storage.
      *
-     * @param int $id
+     * @param  int              $id
      * @param UpdateSelectValueRequest $request
      *
      * @return Response
@@ -131,9 +134,7 @@ class SelectValueController extends AppBaseController
     /**
      * Remove the specified SelectValue from storage.
      *
-     * @param int $id
-     *
-     * @throws \Exception
+     * @param  int $id
      *
      * @return Response
      */
@@ -141,16 +142,8 @@ class SelectValueController extends AppBaseController
     {
         $selectValue = $this->selectValueRepository->find($id);
 
-        if (empty($selectValue)) {
-            Flash::error('Select Value not found');
+        $selectValue->delete();
 
-            return redirect(route('selectValues.index'));
-        }
-
-        $this->selectValueRepository->delete($id);
-
-        Flash::success('Select Value deleted successfully.');
-
-        return redirect(route('selectValues.index'));
+        return $this->sendSuccess('Select Value deleted successfully.');
     }
 }

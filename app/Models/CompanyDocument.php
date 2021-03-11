@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Eloquent as Model;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class CompanyDocument
  * @package App\Models
- * @version March 11, 2021, 11:01 am UTC
+ * @version March 11, 2021, 2:10 pm UTC
  *
  * @property \App\Models\Company $company
  * @property \App\Models\Document $document
@@ -17,15 +18,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class CompanyDocument extends Model
 {
+
     use HasFactory;
 
     public $table = 'company_document';
     
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    public $timestamps = false;
 
-
-    protected $dates = ['deleted_at'];
 
 
 
