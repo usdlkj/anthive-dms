@@ -38,6 +38,19 @@ class UserController extends AppBaseController
         return view('users.index');
     }
 
+    public function indexByCompany(Request $request, $companyId)
+    {
+        $company = \App\Models\Company::find($companyId);
+
+        if ($request->ajax()) {
+            return Datatables::of((new UserDataTable())->getByCompany($companyId))->make(true);
+        }
+
+        return view('users.index')
+            ->with('companyId', $company->id)
+            ->with('companyName', $company->name);
+    }
+
     /**
      * Show the form for creating a new User.
      *

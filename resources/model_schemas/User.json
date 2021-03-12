@@ -36,22 +36,10 @@
         "inView": true
     },
     {
-        "name": "email_verified_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": "nullable|nullable",
-        "searchable": true,
-        "fillable": true,
-        "primary": false,
-        "inForm": true,
-        "inIndex": true,
-        "inView": true
-    },
-    {
-        "name": "password",
-        "dbType": "string,255",
+        "name": "address",
+        "dbType": "string,255:nullable",
         "htmlType": "text",
-        "validations": "required|string|max:255|string|max:255",
+        "validations": "nullable|string|max:255|nullable|string|max:255",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -60,10 +48,10 @@
         "inView": true
     },
     {
-        "name": "remember_token",
-        "dbType": "string,100:nullable",
+        "name": "phone_number",
+        "dbType": "string,255:nullable",
         "htmlType": "text",
-        "validations": "nullable|string|max:100|nullable|string|max:100",
+        "validations": "nullable|string|max:255|nullable|string|max:255",
         "searchable": true,
         "fillable": true,
         "primary": false,
@@ -72,40 +60,28 @@
         "inView": true
     },
     {
-        "name": "created_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": "nullable|nullable",
-        "searchable": false,
-        "fillable": false,
+        "name": "position",
+        "dbType": "string,255:nullable",
+        "htmlType": "text",
+        "validations": "nullable|string|max:255|nullable|string|max:255",
+        "searchable": true,
+        "fillable": true,
         "primary": false,
-        "inForm": false,
-        "inIndex": false,
-        "inView": false
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
     },
     {
-        "name": "updated_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": "nullable|nullable",
-        "searchable": false,
-        "fillable": false,
+        "name": "role",
+        "dbType": "boolean",
+        "htmlType": "checkbox,1",
+        "validations": "required|boolean|boolean",
+        "searchable": true,
+        "fillable": true,
         "primary": false,
-        "inForm": false,
-        "inIndex": false,
-        "inView": false
-    },
-    {
-        "name": "deleted_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": "nullable|nullable",
-        "searchable": false,
-        "fillable": false,
-        "primary": false,
-        "inForm": false,
-        "inIndex": false,
-        "inView": false
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
     },
     {
         "name": "company_id",

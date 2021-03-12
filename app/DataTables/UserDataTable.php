@@ -19,4 +19,10 @@ class UserDataTable
 
         return $query;
     }
+
+    public function getByCompany($companyId)
+    {
+        $query = User::query()->where('company_id', $companyId)->select('users.*');
+        return $query;
+    }
 }

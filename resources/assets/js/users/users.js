@@ -13,7 +13,7 @@ $(tableName).DataTable({
     },
     columnDefs: [
         {
-            'targets': [6],
+            'targets': [7],
             'orderable': false,
             'className': 'text-center',
             'width': '8%',
@@ -24,24 +24,27 @@ $(tableName).DataTable({
             data: 'name',
             name: 'name'
         },{
+            data: 'position',
+            name: 'position'
+        },{
             data: 'email',
             name: 'email'
         },{
-            data: 'email_verified_at',
-            name: 'email_verified_at'
+            data: 'city',
+            name: 'city'
         },{
-            data: 'password',
-            name: 'password'
+            data: 'country',
+            name: 'country'
         },{
-            data: 'remember_token',
-            name: 'remember_token'
+            data: 'phone_number',
+            name: 'phone_number'
         },{
-            data: 'company_id',
-            name: 'company_id'
+            data: 'role',
+            name: 'role'
         },
         {
             data: function (row) {
-                let url = recordsURL + row.id;
+                let url = userURL + row.id;
                 let data = [
                 {
                     'id': row.id,

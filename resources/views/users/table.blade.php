@@ -1,7 +1,7 @@
 <table class="table table-responsive-sm table-striped table-bordered" id="usersTable">
     <thead>
     <tr>
-        <th scope="col">name</th><th scope="col">email</th><th scope="col">email_verified_at</th><th scope="col">password</th><th scope="col">remember_token</th><th scope="col">company_id</th>
+        <th scope="col">Name</th><th scope="col">Position</th><th scope="col">Email</th><th scope="col">City</th><th scope="col">Country</th><th scope="col">Phone</th><th scope="col">Role</th>
         <th scope="col">Action</th>
     </tr>
     </thead>

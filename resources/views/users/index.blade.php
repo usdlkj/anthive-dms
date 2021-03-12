@@ -8,7 +8,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Users</h1>
+            <h1>Users - {{ $company->trading_name }}</h1>
             <div class="section-header-breadcrumb">
                 <a href="{{ route('users.create')}}" class="btn btn-primary form-btn">User <i class="fas fa-plus"></i></a>
             </div>
@@ -25,7 +25,8 @@
 @endsection
 @section('scripts')
     <script>
-        let recordsURL = "{{ route('users.index') }}/";
+        let recordsURL = "{{ route('users.companies', ['companyId' => $company->id]) }}/";
+        let userURL = "{{ route('users.index') }}/";
     </script>
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>

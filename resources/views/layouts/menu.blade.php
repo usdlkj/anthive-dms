@@ -4,11 +4,6 @@
     </a>
 </li>
 
-
-<li class="side-menus {{ Request::is('users*') ? 'active' : '' }}">
-    <a class="nav-link" href="{{ route('users.index') }}"><i class="fas fa-building"></i><span>Users</span></a>
-</li>
-
 <li class="side-menus {{ Request::is('projects*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('projects.index') }}"><i class="fas fa-building"></i><span>Projects</span></a>
 </li>

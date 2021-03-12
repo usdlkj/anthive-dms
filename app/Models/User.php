@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * Class User
  * @package App\Models
- * @version March 11, 2021, 12:38 pm UTC
+ * @version March 12, 2021, 10:55 am UTC
  *
  * @property \App\Models\Company $company
  * @property \Illuminate\Database\Eloquent\Collection $mails
@@ -18,9 +18,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Illuminate\Database\Eloquent\Collection $projects
  * @property string $name
  * @property string $email
- * @property string|\Carbon\Carbon $email_verified_at
- * @property string $password
- * @property string $remember_token
+ * @property string $address
+ * @property string $phone_number
+ * @property string $position
+ * @property boolean $role
  * @property integer $company_id
  */
 class User extends Authenticatable
@@ -42,9 +43,12 @@ class User extends Authenticatable
     public $fillable = [
         'name',
         'email',
-        'email_verified_at',
-        'password',
-        'remember_token',
+        'address',
+        'city',
+        'country',
+        'phone_number',
+        'position',
+        'role',
         'company_id'
     ];
 
@@ -57,9 +61,12 @@ class User extends Authenticatable
         'id' => 'integer',
         'name' => 'string',
         'email' => 'string',
-        'email_verified_at' => 'datetime',
-        'password' => 'string',
-        'remember_token' => 'string',
+        'address' => 'string',
+        'city' => 'string',
+        'country' => 'string',
+        'phone_number' => 'string',
+        'position' => 'string',
+        'role' => 'boolean',
         'company_id' => 'integer'
     ];
 
@@ -71,12 +78,12 @@ class User extends Authenticatable
     public static $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|string|max:255',
-        'email_verified_at' => 'nullable',
-        'password' => 'required|string|max:255',
-        'remember_token' => 'nullable|string|max:100',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable',
-        'deleted_at' => 'nullable',
+        'address' => 'nullable|string|max:255',
+        'city' => 'nullable|string|max:255',
+        'country' => 'nullable|string|max:255',
+        'phone_number' => 'nullable|string|max:255',
+        'position' => 'nullable|string|max:255',
+        'role' => 'required|boolean',
         'company_id' => 'required'
     ];
 

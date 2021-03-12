@@ -49,6 +49,7 @@ $(tableName).DataTable({
                 {
                     'id': row.id,
                     'url': url + '/edit',
+                    'usersUrl': url + '/users',
                 }];
                                 
                 return prepareTemplateRender('#companiesTemplate',

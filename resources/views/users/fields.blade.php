@@ -10,33 +10,33 @@
     {!! Form::email('email', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
-<!-- Email Verified At Field -->
+<!-- Address Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('email_verified_at', 'Email Verified At:') !!}
-    {!! Form::text('email_verified_at', null, ['class' => 'form-control','id'=>'email_verified_at']) !!}
+    {!! Form::label('address', 'Address:') !!}
+    {!! Form::text('address', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
-@push('scripts')
-    <script type="text/javascript">
-        $('#email_verified_at').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
-            useCurrent: true,
-            sideBySide: true
-        })
-    </script>
-@endpush
-
-<!-- Password Field -->
+<!-- Phone Number Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('password', 'Password:') !!}
-    {!! Form::password('password', ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
+    {!! Form::label('phone_number', 'Phone Number:') !!}
+    {!! Form::text('phone_number', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
-<!-- Remember Token Field -->
+<!-- Position Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('remember_token', 'Remember Token:') !!}
-    {!! Form::text('remember_token', null, ['class' => 'form-control','maxlength' => 100,'maxlength' => 100]) !!}
+    {!! Form::label('position', 'Position:') !!}
+    {!! Form::text('position', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
 </div>
+
+<!-- Role Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('role', 'Role:') !!}
+    <label class="checkbox-inline">
+        {!! Form::hidden('role', 0) !!}
+        {!! Form::checkbox('role', '1', null) !!}
+    </label>
+</div>
+
 
 <!-- Company Id Field -->
 <div class="form-group col-sm-6">

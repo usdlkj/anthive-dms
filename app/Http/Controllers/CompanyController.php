@@ -86,6 +86,19 @@ class CompanyController extends AppBaseController
         return view('companies.show')->with('company', $company);
     }
 
+    public function showUsers($id)
+    {
+        $company = $this->companyRepository->find($id);
+
+        if (empty($company)) {
+            Flash::error('Company not found');
+
+            return redirect(route('companies.index'));
+        }
+
+        return view('users.index')->with('company', $company);
+    }
+
     /**
      * Show the form for editing the specified Company.
      *
