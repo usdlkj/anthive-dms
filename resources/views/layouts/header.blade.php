@@ -1,6 +1,8 @@
 <form class="form-inline mr-auto" action="#">
     <ul class="navbar-nav mr-3">
         <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+        <li class="{{ Request::is('companies*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('companies.index') }}">Companies</a></li>
     </ul>
 </form>
 <ul class="navbar-nav navbar-right">
@@ -12,7 +14,7 @@
                 <img alt="image" src="{{ asset('img/logo.png') }}"
                      class="rounded-circle mr-1 thumbnail-rounded user-thumbnail ">
                 <div class="d-sm-none d-lg-inline-block">
-                    Hi, {{\Illuminate\Support\Facades\Auth::user()->first_name}}</div>
+                    Hi, {{\Illuminate\Support\Facades\Auth::user()->name}}</div>
             </a>
 
             <div class="dropdown-menu dropdown-menu-right">

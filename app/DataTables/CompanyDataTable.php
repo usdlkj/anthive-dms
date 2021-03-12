@@ -15,7 +15,8 @@ class CompanyDataTable
     public function get()
     {
         /** @var Company $query */
-        $query = Company::query()->select('companies.*');
+        $columns = ['id', 'company_name', 'trading_name', 'company_code', 'city', 'country', 'phone_number', 'email'];
+        $query = Company::query()->select($columns);
 
         return $query;
     }

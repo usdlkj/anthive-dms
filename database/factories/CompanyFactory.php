@@ -21,13 +21,18 @@ class CompanyFactory extends Factory
      */
     public function definition()
     {
+        $company = $this->faker->company;
+        $suffix = $this->faker->companySuffix;
         return [
-            'company_name' => $this->faker->word,
-        'trading_name' => $this->faker->word,
-        'company_code' => $this->faker->word,
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+            'company_name' => $company.' '.$suffix,
+            'trading_name' => $company,
+            'company_code' => $this->faker->unique()->word,
+            'address' => $this->faker->streetAddress,
+            'city' => $this->faker->city,
+            'post_code' => $this->faker->postcode,
+            'country' => $this->faker->country,
+            'phone_number' => $this->faker->phoneNumber,
+            'email' => $this->faker->email
         ];
     }
 }

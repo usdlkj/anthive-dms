@@ -13,7 +13,7 @@ $(tableName).DataTable({
     },
     columnDefs: [
         {
-            'targets': [3],
+            'targets': [7],
             'orderable': false,
             'className': 'text-center',
             'width': '8%',
@@ -29,6 +29,18 @@ $(tableName).DataTable({
         },{
             data: 'company_code',
             name: 'company_code'
+        },{
+            data: 'city',
+            name: 'city'
+        },{
+            data: 'country',
+            name: 'country'
+        },{
+            data: 'phone_number',
+            name: 'phone_number'
+        },{
+            data: 'email',
+            name: 'email'
         },
         {
             data: function (row) {

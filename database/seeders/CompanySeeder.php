@@ -17,7 +17,13 @@ class CompanySeeder extends Seeder
         DB::table('companies')->insert([
             'company_name' => 'PT Kapzet Teknologi Informasi',
             'trading_name' => 'Kapzet IT Consulting',
-            'company_code' => 'KAP',
+            'company_code' => 'KTI',
+            'address' => 'Komplek Green Ville Blok BG No 69',
+            'city' => 'Jakarta Barat',
+            'post_code' => '11510',
+            'country' => 'Indonesia',
+            'phone_number' => '021 25561616',
+            'email' => 'info@kapzet.id',
         ]);
     }
 }

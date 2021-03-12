@@ -18,6 +18,12 @@ class CreateCompaniesTable extends Migration
             $table->string('company_name');
             $table->string('trading_name');
             $table->string('company_code')->unique();
+            $table->string('address');
+            $table->string('city');
+            $table->string('post_code')->nullable();
+            $table->string('country');
+            $table->string('phone_number');
+            $table->string('email');
             $table->timestamps();
             $table->softDeletes();
         });

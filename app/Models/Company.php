@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Company
  * @package App\Models
- * @version March 11, 2021, 12:30 pm UTC
+ * @version March 11, 2021, 11:51 pm UTC
  *
  * @property \Illuminate\Database\Eloquent\Collection $documents
  * @property \Illuminate\Database\Eloquent\Collection $projects
@@ -17,27 +17,35 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $company_name
  * @property string $trading_name
  * @property string $company_code
+ * @property string $address
+ * @property string $city
+ * @property string $post_code
+ * @property string $country
+ * @property string $phone_number
+ * @property string $email
  */
 class Company extends Model
 {
-    use SoftDeletes;
 
     use HasFactory;
 
     public $table = 'companies';
     
-    const CREATED_AT = 'created_at';
-    const UPDATED_AT = 'updated_at';
+    public $timestamps = false;
 
-
-    protected $dates = ['deleted_at'];
 
 
 
     public $fillable = [
         'company_name',
         'trading_name',
-        'company_code'
+        'company_code',
+        'address',
+        'city',
+        'post_code',
+        'country',
+        'phone_number',
+        'email'
     ];
 
     /**
@@ -49,7 +57,13 @@ class Company extends Model
         'id' => 'integer',
         'company_name' => 'string',
         'trading_name' => 'string',
-        'company_code' => 'string'
+        'company_code' => 'string',
+        'address' => 'string',
+        'city' => 'string',
+        'post_code' => 'string',
+        'country' => 'string',
+        'phone_number' => 'string',
+        'email' => 'string'
     ];
 
     /**
@@ -61,9 +75,12 @@ class Company extends Model
         'company_name' => 'required|string|max:255',
         'trading_name' => 'required|string|max:255',
         'company_code' => 'required|string|max:255',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable',
-        'deleted_at' => 'nullable'
+        'address' => 'required|string|max:255',
+        'city' => 'required|string|max:255',
+        'post_code' => 'nullable|string|max:255',
+        'country' => 'required|string|max:255',
+        'phone_number' => 'required|string|max:255',
+        'email' => 'required|string|max:255'
     ];
 
     /**
