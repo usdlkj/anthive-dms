@@ -27,7 +27,9 @@ class UserSeeder extends Seeder
             'phone_number' => '021 25561616',
             'position' => 'Super Admin',
             'role' => 1,
-            'company_id' => 1
+            'company_id' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

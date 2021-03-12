@@ -24,6 +24,8 @@ class CompanySeeder extends Seeder
             'country' => 'Indonesia',
             'phone_number' => '021 25561616',
             'email' => 'info@kapzet.id',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

@@ -30,11 +30,6 @@ class Company extends Model
     use HasFactory;
 
     public $table = 'companies';
-    
-    public $timestamps = false;
-
-
-
 
     public $fillable = [
         'company_name',
