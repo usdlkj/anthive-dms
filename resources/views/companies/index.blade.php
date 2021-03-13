@@ -1,33 +1,44 @@
 @extends('layouts.app')
-@section('title')
-    Companies 
-@endsection
-@section('css')
-    <link href="{{ asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
-@endsection
+
 @section('content')
-    <section class="section">
-        <div class="section-header">
-            <h1>Companies</h1>
-            <div class="section-header-breadcrumb">
-                <a href="{{ route('companies.create')}}" class="btn btn-primary form-btn">Company <i class="fas fa-plus"></i></a>
-            </div>
-        </div>
-        <div class="section-body">
-            <div class="card">
-                <div class="card-body">
-                    @include('companies.table')
-                    @include('companies.templates.templates')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Companies</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-primary float-right"
+                       href="{{ route('companies.create') }}">
+                        Add New
+                    </a>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="content px-3">
+
+        @include('flash::message')
+
+        <div class="clearfix"></div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                {{$dataTable->table()}}
+
+                <div class="card-footer clearfix float-right">
+                    <div class="float-right">
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 @endsection
-@section('scripts')
-    <script>
-        let recordsURL = "{{ route('companies.index') }}/";
-    </script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>
-    <script src="{{mix('assets/js/companies/companies.js')}}"></script>
-@endsection
+
+@push('scripts')
+    {{$dataTable->scripts()}}
+@endpush

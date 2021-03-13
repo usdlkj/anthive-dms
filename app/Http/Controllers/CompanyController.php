@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\CompanyDataTable;
-use App\Http\Requests;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreateCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Repositories\CompanyRepository;
-use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
+use Flash;
 use Response;
-use Datatables;
-use App\Models\Company;
+
+use App\DataTables\CompanyDataTable;
 
 class CompanyController extends AppBaseController
 {
@@ -22,22 +20,25 @@ class CompanyController extends AppBaseController
     public function __construct(CompanyRepository $companyRepo)
     {
         $this->companyRepository = $companyRepo;
-        $this->authorizeResource(Company::class, 'company');
     }
 
     /**
      * Display a listing of the Company.
      *
      * @param Request $request
+     *
      * @return Response
      */
-    public function index(Request $request)
+    // public function index(Request $request)
+    // {
+    //     $companies = $this->companyRepository->all();
+
+    //     return view('companies.index')
+    //         ->with('companies', $companies);
+    // }
+    public function index(CompanyDataTable $dataTable)
     {
-        if ($request->ajax()) {
-            return Datatables::of((new CompanyDataTable())->get())->make(true);
-        }
-    
-        return view('companies.index');
+        return $dataTable->render('companies.index');
     }
 
     /**
@@ -71,7 +72,7 @@ class CompanyController extends AppBaseController
     /**
      * Display the specified Company.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -88,23 +89,10 @@ class CompanyController extends AppBaseController
         return view('companies.show')->with('company', $company);
     }
 
-    public function showUsers($id)
-    {
-        $company = $this->companyRepository->find($id);
-
-        if (empty($company)) {
-            Flash::error('Company not found');
-
-            return redirect(route('companies.index'));
-        }
-
-        return view('users.index')->with('company', $company);
-    }
-
     /**
      * Show the form for editing the specified Company.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -124,7 +112,7 @@ class CompanyController extends AppBaseController
     /**
      * Update the specified Company in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateCompanyRequest $request
      *
      * @return Response
@@ -149,7 +137,9 @@ class CompanyController extends AppBaseController
     /**
      * Remove the specified Company from storage.
      *
-     * @param  int $id
+     * @param int $id
+     *
+     * @throws \Exception
      *
      * @return Response
      */
@@ -157,8 +147,16 @@ class CompanyController extends AppBaseController
     {
         $company = $this->companyRepository->find($id);
 
-        $company->delete();
+        if (empty($company)) {
+            Flash::error('Company not found');
 
-        return $this->sendSuccess('Company deleted successfully.');
+            return redirect(route('companies.index'));
+        }
+
+        $this->companyRepository->delete($id);
+
+        Flash::success('Company deleted successfully.');
+
+        return redirect(route('companies.index'));
     }
 }

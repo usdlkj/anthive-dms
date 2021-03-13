@@ -1,15 +1,17 @@
-<aside id="sidebar-wrapper">
-    <div class="sidebar-brand">
-        <img class="navbar-brand-full app-header-logo" src="{{ asset('img/logo.png') }}" width="65"
-             alt="Infyom Logo">
-        <a href="{{ url('/') }}"></a>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="{{ route('home') }}" class="brand-link">
+        <img src="https://assets.infyom.com/logo/blue_logo_150x150.png"
+             alt="{{ config('app.name') }} Logo"
+             class="brand-image img-circle elevation-3">
+        <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
+    </a>
+
+    <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @include('layouts.menu')
+            </ul>
+        </nav>
     </div>
-    <div class="sidebar-brand sidebar-brand-sm">
-        <a href="{{ url('/') }}" class="small-sidebar-text">
-            <img class="navbar-brand-full" src="{{ asset('img/logo.png') }}" width="45px" alt=""/>
-        </a>
-    </div>
-    <ul class="sidebar-menu">
-        @include('layouts.menu')
-    </ul>
+
 </aside>

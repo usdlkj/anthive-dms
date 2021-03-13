@@ -93,7 +93,7 @@ return [
     |
     */
 
-    'templates'         => 'stisla-templates',
+    'templates'         => 'adminlte-templates',
 
     /*
     |--------------------------------------------------------------------------

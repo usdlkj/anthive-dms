@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Eloquent as Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Company
  * @package App\Models
- * @version March 11, 2021, 11:51 pm UTC
+ * @version March 13, 2021, 8:28 am UTC
  *
  * @property \Illuminate\Database\Eloquent\Collection $documents
  * @property \Illuminate\Database\Eloquent\Collection $projects
@@ -26,10 +26,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Company extends Model
 {
+    use SoftDeletes;
 
     use HasFactory;
 
     public $table = 'companies';
+    
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+
+
+    protected $dates = ['deleted_at'];
+
+
 
     public $fillable = [
         'company_name',
@@ -75,7 +84,10 @@ class Company extends Model
         'post_code' => 'nullable|string|max:255',
         'country' => 'required|string|max:255',
         'phone_number' => 'required|string|max:255',
-        'email' => 'required|string|max:255'
+        'email' => 'required|string|max:255',
+        'created_at' => 'nullable',
+        'updated_at' => 'nullable',
+        'deleted_at' => 'nullable'
     ];
 
     /**
