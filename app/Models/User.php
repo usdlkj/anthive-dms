@@ -35,6 +35,12 @@ class User extends Authenticatable
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
+    const ROLE_SUPER_ADMIN = 1;
+    const ROLE_OPS_ADMIN = 2;
+    const ROLE_COMPANY_ADMIN = 3;
+    const ROLE_MANAGER = 4;
+    const ROLE_STAFF = 5;
+
 
     protected $dates = ['deleted_at'];
 
@@ -66,7 +72,7 @@ class User extends Authenticatable
         'country' => 'string',
         'phone_number' => 'string',
         'position' => 'string',
-        'role' => 'boolean',
+        'role' => 'integer',
         'company_id' => 'integer'
     ];
 

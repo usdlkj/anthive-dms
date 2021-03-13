@@ -1,8 +1,10 @@
 <form class="form-inline mr-auto" action="#">
     <ul class="navbar-nav mr-3">
         <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+        @can('viewAny', App\Models\Company::class)
         <li class="{{ Request::is('companies*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('companies.index') }}">Companies</a></li>
+        @endcan
     </ul>
 </form>
 <ul class="navbar-nav navbar-right">

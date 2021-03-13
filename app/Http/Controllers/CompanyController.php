@@ -12,6 +12,7 @@ use Flash;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use Datatables;
+use App\Models\Company;
 
 class CompanyController extends AppBaseController
 {
@@ -21,6 +22,7 @@ class CompanyController extends AppBaseController
     public function __construct(CompanyRepository $companyRepo)
     {
         $this->companyRepository = $companyRepo;
+        $this->authorizeResource(Company::class, 'company');
     }
 
     /**
