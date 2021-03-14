@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 /**
  * Class User
  * @package App\Models
- * @version March 12, 2021, 10:55 am UTC
+ * @version March 13, 2021, 12:24 pm UTC
  *
  * @property \App\Models\Company $company
  * @property \Illuminate\Database\Eloquent\Collection $mails
@@ -18,7 +18,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Illuminate\Database\Eloquent\Collection $projects
  * @property string $name
  * @property string $email
+ * @property string|\Carbon\Carbon $email_verified_at
+ * @property string $password
+ * @property string $remember_token
  * @property string $address
+ * @property string $city
+ * @property string $country
  * @property string $phone_number
  * @property string $position
  * @property boolean $role
@@ -45,10 +50,12 @@ class User extends Authenticatable
     protected $dates = ['deleted_at'];
 
 
-
     public $fillable = [
         'name',
         'email',
+        'email_verified_at',
+        'password',
+        'remember_token',
         'address',
         'city',
         'country',
@@ -67,12 +74,15 @@ class User extends Authenticatable
         'id' => 'integer',
         'name' => 'string',
         'email' => 'string',
+        'email_verified_at' => 'datetime',
+        'password' => 'string',
+        'remember_token' => 'string',
         'address' => 'string',
         'city' => 'string',
         'country' => 'string',
         'phone_number' => 'string',
         'position' => 'string',
-        'role' => 'integer',
+        'role' => 'boolean',
         'company_id' => 'integer'
     ];
 
@@ -84,6 +94,9 @@ class User extends Authenticatable
     public static $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|string|max:255',
+        'email_verified_at' => 'nullable',
+        'password' => 'required|string|max:255',
+        'remember_token' => 'nullable|string|max:100',
         'address' => 'nullable|string|max:255',
         'city' => 'nullable|string|max:255',
         'country' => 'nullable|string|max:255',

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\UserDataTable;
-use App\Http\Requests;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
-use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
+use Flash;
 use Response;
-use Datatables;
+
+use App\DataTables\UserDataTable;
+use DB;
+use DataTables;
 
 class UserController extends AppBaseController
 {
@@ -27,28 +28,18 @@ class UserController extends AppBaseController
      * Display a listing of the User.
      *
      * @param Request $request
+     *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(UserDataTable $dataTable)
     {
-        if ($request->ajax()) {
-            return Datatables::of((new UserDataTable())->get())->make(true);
-        }
-    
-        return view('users.index');
+        return $dataTable->render('users.index');
     }
 
-    public function indexByCompany(Request $request, $companyId)
+    public function indexByCompany(UserDataTable $dataTable, $companyId)
     {
-        $company = \App\Models\Company::find($companyId);
-
-        if ($request->ajax()) {
-            return Datatables::of((new UserDataTable())->getByCompany($companyId))->make(true);
-        }
-
-        return view('users.index')
-            ->with('companyId', $company->id)
-            ->with('companyName', $company->name);
+        $users = DB::table('users')->where('company_id', $companyId);
+        return $dataTable->render('users.index', DataTables::of($users)->make(true));
     }
 
     /**
@@ -82,7 +73,7 @@ class UserController extends AppBaseController
     /**
      * Display the specified User.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -102,7 +93,7 @@ class UserController extends AppBaseController
     /**
      * Show the form for editing the specified User.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -122,7 +113,7 @@ class UserController extends AppBaseController
     /**
      * Update the specified User in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateUserRequest $request
      *
      * @return Response
@@ -147,7 +138,9 @@ class UserController extends AppBaseController
     /**
      * Remove the specified User from storage.
      *
-     * @param  int $id
+     * @param int $id
+     *
+     * @throws \Exception
      *
      * @return Response
      */
@@ -155,8 +148,16 @@ class UserController extends AppBaseController
     {
         $user = $this->userRepository->find($id);
 
-        $user->delete();
+        if (empty($user)) {
+            Flash::error('User not found');
 
-        return $this->sendSuccess('User deleted successfully.');
+            return redirect(route('users.index'));
+        }
+
+        $this->userRepository->delete($id);
+
+        Flash::success('User deleted successfully.');
+
+        return redirect(route('users.index'));
     }
 }

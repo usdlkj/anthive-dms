@@ -1,34 +1,43 @@
 @extends('layouts.app')
-@section('title')
-    Users 
-@endsection
-@section('css')
-    <link href="{{ asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
-@endsection
+
 @section('content')
-    <section class="section">
-        <div class="section-header">
-            <h1>Users - {{ $company->trading_name }}</h1>
-            <div class="section-header-breadcrumb">
-                <a href="{{ route('users.create')}}" class="btn btn-primary form-btn">User <i class="fas fa-plus"></i></a>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Users</h1>
+            </div>
+            <div class="col-sm-6">
+                <a class="btn btn-primary float-right" href="{{ route('users.create') }}">
+                    Add New
+                </a>
             </div>
         </div>
-        <div class="section-body">
-            <div class="card">
-                <div class="card-body">
-                    @include('users.table')
-                    @include('users.templates.templates')
+    </div>
+</section>
+
+<div class="content px-3">
+
+    @include('flash::message')
+
+    <div class="clearfix"></div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            {{$dataTable->table()}}
+
+            <div class="card-footer clearfix float-right">
+                <div class="float-right">
+
                 </div>
             </div>
         </div>
-    </section>
+
+    </div>
+</div>
+
 @endsection
-@section('scripts')
-    <script>
-        let recordsURL = "{{ route('users.companies', ['companyId' => $company->id]) }}/";
-        let userURL = "{{ route('users.index') }}/";
-    </script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>
-    <script src="{{mix('assets/js/users/users.js')}}"></script>
-@endsection
+
+@push('scripts')
+{{$dataTable->scripts()}}
+@endpush

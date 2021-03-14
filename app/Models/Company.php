@@ -109,7 +109,7 @@ class Company extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function users()
+    public function employees()
     {
         return $this->hasMany(\App\Models\User::class, 'company_id');
     }

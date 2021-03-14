@@ -21,7 +21,6 @@ mix.styles([
     'public/css/prism.css',
     'public/css/main.css',
     'public/css/custom.css',
-    'resources/scss/app.scss',
 ], 'public/css/all.css').version();
 
 mix.js(

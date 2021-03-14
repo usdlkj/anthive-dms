@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 
 class UserFactory extends Factory
 {
@@ -23,17 +22,21 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'company_id' => $this->faker->numberBetween($min = 1, $max = 16),
-            'name' => $this->faker->name,
-            'email' => $this->faker->companyEmail,
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'address' => $this->faker->streetAddress,
-            'city' => $this->faker->city,
-            'country' => $this->faker->country,
-            'phone_number' => $this->faker->phoneNumber,
-            'position' => $this->faker->jobTitle,
-            'role' => $this->faker->numberBetween($min = 2, $max = 5)
+            'name' => $this->faker->word,
+        'email' => $this->faker->word,
+        'email_verified_at' => $this->faker->date('Y-m-d H:i:s'),
+        'password' => $this->faker->word,
+        'remember_token' => $this->faker->word,
+        'address' => $this->faker->word,
+        'city' => $this->faker->word,
+        'country' => $this->faker->word,
+        'phone_number' => $this->faker->word,
+        'position' => $this->faker->word,
+        'role' => $this->faker->word,
+        'created_at' => $this->faker->date('Y-m-d H:i:s'),
+        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
+        'deleted_at' => $this->faker->date('Y-m-d H:i:s'),
+        'company_id' => $this->faker->word
         ];
     }
 }

@@ -10,10 +10,50 @@
     {!! Form::email('email', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
+<!-- Email Verified At Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('email_verified_at', 'Email Verified At:') !!}
+    {!! Form::text('email_verified_at', null, ['class' => 'form-control','id'=>'email_verified_at']) !!}
+</div>
+
+@push('page_scripts')
+    <script type="text/javascript">
+        $('#email_verified_at').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            useCurrent: true,
+            sideBySide: true
+        })
+    </script>
+@endpush
+
+<!-- Password Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('password', 'Password:') !!}
+    {!! Form::password('password', ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<!-- Remember Token Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('remember_token', 'Remember Token:') !!}
+    {!! Form::text('remember_token', null, ['class' => 'form-control','maxlength' => 100,'maxlength' => 100]) !!}
+</div>
+
 <!-- Address Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('address', 'Address:') !!}
     {!! Form::text('address', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<!-- City Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('city', 'City:') !!}
+    {!! Form::text('city', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<!-- Country Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('country', 'Country:') !!}
+    {!! Form::text('country', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
 <!-- Phone Number Field -->
@@ -30,11 +70,11 @@
 
 <!-- Role Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('role', 'Role:') !!}
-    <label class="checkbox-inline">
-        {!! Form::hidden('role', 0) !!}
-        {!! Form::checkbox('role', '1', null) !!}
-    </label>
+    <div class="form-check">
+        {!! Form::hidden('role', 0, ['class' => 'form-check-input']) !!}
+        {!! Form::checkbox('role', '1', null, ['class' => 'form-check-input']) !!}
+        {!! Form::label('role', 'Role', ['class' => 'form-check-label']) !!}
+    </div>
 </div>
 
 
@@ -42,10 +82,4 @@
 <div class="form-group col-sm-6">
     {!! Form::label('company_id', 'Company Id:') !!}
     {!! Form::number('company_id', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Submit Field -->
-<div class="form-group col-sm-12">
-    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-    <a href="{{ route('users.index') }}" class="btn btn-light">Cancel</a>
 </div>

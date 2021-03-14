@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use Flash;
 use Response;
 
-use App\DataTables\CompanyDataTable;
+use App\Models\Company;
+use DataTables;
 
 class CompanyController extends AppBaseController
 {
@@ -29,16 +30,25 @@ class CompanyController extends AppBaseController
      *
      * @return Response
      */
-    // public function index(Request $request)
-    // {
-    //     $companies = $this->companyRepository->all();
-
-    //     return view('companies.index')
-    //         ->with('companies', $companies);
-    // }
-    public function index(CompanyDataTable $dataTable)
+    public function index(Request $request)
     {
-        return $dataTable->render('companies.index');
+        if ($request->ajax()) {
+            $data = Company::all();
+            return Datatables::of($data)
+                ->addColumn('action', function($row) {
+                        $action_btn = '<td colspan="3"><div class="btn-group">
+                            <a href="'.route('companies.show', $row['id']).'" class="btn btn-default btn-xs">
+                                <i class="far fa-eye"></i>
+                            </a>
+                            <a href="'.route('companies.edit', $row['id']).'" class="btn btn-default btn-xs">
+                                <i class="far fa-edit"></i>
+                            </a></div></td>';
+                        return $action_btn;
+                })
+                ->make(true);
+        }
+
+        return view('companies.index');
     }
 
     /**
@@ -87,6 +97,11 @@ class CompanyController extends AppBaseController
         }
 
         return view('companies.show')->with('company', $company);
+    }
+
+    public function showUsers($companyId)
+    {
+        return redirect(route('users.companies', ['companyId' => $companyId]));
     }
 
     /**

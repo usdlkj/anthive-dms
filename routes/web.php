@@ -21,11 +21,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Auth::routes();
 
-Route::get('/companies/{company}/users', [App\Http\Controllers\CompanyController::class, 'showUsers'])
+Route::get('/companies/{companyId}/users', [App\Http\Controllers\CompanyController::class, 'showUsers'])
     ->name('companies.users');
 Route::resource('companies', App\Http\Controllers\CompanyController::class);
 
-Route::get('/users/{companyId}', [App\Http\Controllers\UserController::class, 'indexByCompany'])
+Route::get('/users/company/{companyId}', [App\Http\Controllers\UserController::class, 'indexByCompany'])
     ->name('users.companies');
 Route::resource('users', App\Http\Controllers\UserController::class);
 
