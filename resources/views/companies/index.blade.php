@@ -42,7 +42,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
     var table = $('#companies-table').DataTable({
-        // processing: true,
+        processing: true,
         serverSide: true,
         ajax: "{{ route('companies.index') }}",
         columns: [{

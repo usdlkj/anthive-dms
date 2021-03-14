@@ -26,7 +26,7 @@ Route::get('/companies/{companyId}/users', [App\Http\Controllers\CompanyControll
 Route::resource('companies', App\Http\Controllers\CompanyController::class);
 
 Route::get('/users/company/{companyId}', [App\Http\Controllers\UserController::class, 'indexByCompany'])
-    ->name('users.companies');
+    ->name('users.company');
 Route::resource('users', App\Http\Controllers\UserController::class);
 
 Route::resource('projects', App\Http\Controllers\ProjectController::class);

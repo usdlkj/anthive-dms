@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Flash;
 use Response;
 
-use App\DataTables\UserDataTable;
+use App\Models\User;
 use DB;
 use DataTables;
 
@@ -31,15 +31,48 @@ class UserController extends AppBaseController
      *
      * @return Response
      */
-    public function index(UserDataTable $dataTable)
+    public function index(Request $request)
     {
-        return $dataTable->render('users.index');
+        if ($request->ajax()) {
+            $data = User::all();
+            return Datatables::of($data)
+                ->addColumn('action', function($row) {
+                        $action_btn = '<td colspan="3"><div class="btn-group">
+                            <a href="'.route('users.show', $row['id']).'" class="btn btn-secondary btn-xs">
+                                <i class="far fa-eye"></i>
+                            </a>
+                            <a href="'.route('users.edit', $row['id']).'" class="btn btn-warning btn-xs">
+                                <i class="far fa-edit"></i>
+                            </a></div></td>';
+                        return $action_btn;
+                })
+                ->make(true);
+        }
+
+        return view('users.index');
     }
 
-    public function indexByCompany(UserDataTable $dataTable, $companyId)
+    public function indexByCompany(Request $request, $companyId)
     {
-        $users = DB::table('users')->where('company_id', $companyId);
-        return $dataTable->render('users.index', DataTables::of($users)->make(true));
+        if ($request->ajax()) {
+            $data = User::where('company_id', $companyId)->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                        $action_btn = '<td><div class="btn-group">
+                            <a href="'.route('users.show', $row['id']).'" class="btn btn-secondary btn-xs">
+                                <i class="far fa-eye"></i>
+                            </a>
+                            <a href="'.route('users.edit', $row['id']).'" class="btn btn-warning btn-xs">
+                                <i class="far fa-edit"></i>
+                            </a></div></td>';
+                        return $action_btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('users.index')->with('companyId', $companyId);
     }
 
     /**

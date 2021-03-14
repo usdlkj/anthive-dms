@@ -11,6 +11,7 @@ use Flash;
 use Response;
 
 use App\Models\Company;
+use App\Models\User;
 use DataTables;
 
 class CompanyController extends AppBaseController
@@ -35,16 +36,21 @@ class CompanyController extends AppBaseController
         if ($request->ajax()) {
             $data = Company::all();
             return Datatables::of($data)
+                ->addIndexColumn()
                 ->addColumn('action', function($row) {
-                        $action_btn = '<td colspan="3"><div class="btn-group">
-                            <a href="'.route('companies.show', $row['id']).'" class="btn btn-default btn-xs">
+                        $action_btn = '<td><div class="btn-group">
+                            <a href="'.route('companies.users', $row['id']).'" class="btn btn-primary btn-xs">
+                                <i class="far fa-user"></i>
+                            </a>
+                            <a href="'.route('companies.show', $row['id']).'" class="btn btn-secondary btn-xs">
                                 <i class="far fa-eye"></i>
                             </a>
-                            <a href="'.route('companies.edit', $row['id']).'" class="btn btn-default btn-xs">
+                            <a href="'.route('companies.edit', $row['id']).'" class="btn btn-warning btn-xs">
                                 <i class="far fa-edit"></i>
                             </a></div></td>';
                         return $action_btn;
                 })
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
@@ -99,9 +105,9 @@ class CompanyController extends AppBaseController
         return view('companies.show')->with('company', $company);
     }
 
-    public function showUsers($companyId)
+    public function showUsers(Request $request, $companyId)
     {
-        return redirect(route('users.companies', ['companyId' => $companyId]));
+        return view('users.index')->with('companyId', $companyId);
     }
 
     /**

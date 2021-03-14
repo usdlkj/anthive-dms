@@ -82,7 +82,7 @@ class User extends Authenticatable
         'country' => 'string',
         'phone_number' => 'string',
         'position' => 'string',
-        'role' => 'boolean',
+        'role' => 'integer',
         'company_id' => 'integer'
     ];
 

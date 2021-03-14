@@ -5,7 +5,7 @@
                 <th>Company Name</th>
                 <th>Trading Name</th>
                 <th>Company Code</th>
-                <th colspan="3">Action</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>

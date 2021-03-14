@@ -24,8 +24,7 @@
 
     <div class="card">
         <div class="card-body p-0">
-            {{$dataTable->table()}}
-
+            @include('users.table')
             <div class="card-footer clearfix float-right">
                 <div class="float-right">
 
@@ -39,5 +38,38 @@
 @endsection
 
 @push('scripts')
-{{$dataTable->scripts()}}
+<script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#users-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "/users/company/{{$companyId}}",
+        columns: [{
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'position',
+                name: 'position'
+            },
+            {
+                data: 'email',
+                name: 'email'
+            },
+            {
+                data: 'phone_number',
+                name: 'phone_number'
+            },
+            {
+                data: 'role',
+                name: 'role'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            }
+        ]
+    });
+});
+</script>
 @endpush
