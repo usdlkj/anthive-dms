@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -26,7 +27,7 @@ class UserSeeder extends Seeder
             'country' => 'Indonesia',
             'phone_number' => '021 25561616',
             'position' => 'Super Admin',
-            'role' => 1,
+            'role' => User::ROLE_SUPER_ADMIN,
             'company_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
