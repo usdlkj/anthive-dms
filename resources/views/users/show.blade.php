@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default float-right"
-                       href="{{ route('users.index') }}">
+                       href="/companies/{{$user->company_id}}/users">
                         Back
                     </a>
                 </div>

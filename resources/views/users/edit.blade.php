@@ -17,21 +17,24 @@
 
         <div class="card">
 
-            {!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'patch']) !!}
-
+            {!! Form::model($user, ['route' => ['companies.users.update', $user->company_id, $user->id], 'method' => 'patch']) !!}
+            
             <div class="card-body">
                 <div class="row">
                     @include('users.fields')
                 </div>
+
+                <div class="row">
+                    <button type="submit" class="btn btn-primary">Save</button>&nbsp;
+                    {!! Form::close() !!}
+                    <a href="/companies/{{$user->company_id}}/users" class="btn btn-default">Cancel</a>&nbsp;
+                    <form action="/companies/{{$user->company_id}}/users/{{$user->id}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                    </form>
+                </div>
             </div>
-
-            <div class="card-footer">
-                {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('users.index') }}" class="btn btn-default">Cancel</a>
-            </div>
-
-           {!! Form::close() !!}
-
         </div>
     </div>
 @endsection

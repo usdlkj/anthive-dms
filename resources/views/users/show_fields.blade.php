@@ -16,18 +16,6 @@
     <p>{{ $user->email_verified_at }}</p>
 </div>
 
-<!-- Password Field -->
-<div class="col-sm-12">
-    {!! Form::label('password', 'Password:') !!}
-    <p>{{ $user->password }}</p>
-</div>
-
-<!-- Remember Token Field -->
-<div class="col-sm-12">
-    {!! Form::label('remember_token', 'Remember Token:') !!}
-    <p>{{ $user->remember_token }}</p>
-</div>
-
 <!-- Address Field -->
 <div class="col-sm-12">
     {!! Form::label('address', 'Address:') !!}
@@ -61,12 +49,17 @@
 <!-- Role Field -->
 <div class="col-sm-12">
     {!! Form::label('role', 'Role:') !!}
-    <p>{{ $user->role }}</p>
+    <p>
+    @if ($user->role == App\Models\User::ROLE_SUPER_ADMIN) 
+    Super Admin 
+    @elseif ($user->role == App\Models\User::ROLE_OPS_ADMIN) 
+    Ops Admin 
+    @elseif ($user->role == App\Models\User::ROLE_COMPANY_ADMIN) 
+    Company Admin 
+    @elseif ($user->role == App\Models\User::ROLE_MANAGER) 
+    Manager
+    @else
+    Staff
+    @endif
+    </p>
 </div>
-
-<!-- Company Id Field -->
-<div class="col-sm-12">
-    {!! Form::label('company_id', 'Company Id:') !!}
-    <p>{{ $user->company_id }}</p>
-</div>
-

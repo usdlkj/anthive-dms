@@ -39,7 +39,7 @@ class CompanyController extends AppBaseController
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                         $action_btn = '<td><div class="btn-group">
-                            <a href="'.route('companies.users', $row['id']).'" class="btn btn-primary btn-xs">
+                            <a href="'.route('companies.users.index', $row['id']).'" class="btn btn-primary btn-xs">
                                 <i class="far fa-user"></i>
                             </a>
                             <a href="'.route('companies.show', $row['id']).'" class="btn btn-secondary btn-xs">
@@ -103,11 +103,6 @@ class CompanyController extends AppBaseController
         }
 
         return view('companies.show')->with('company', $company);
-    }
-
-    public function showUsers(Request $request, $companyId)
-    {
-        return view('users.index')->with('companyId', $companyId);
     }
 
     /**

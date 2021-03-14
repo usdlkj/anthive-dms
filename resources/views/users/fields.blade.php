@@ -13,7 +13,7 @@
 <!-- Email Verified At Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('email_verified_at', 'Email Verified At:') !!}
-    {!! Form::text('email_verified_at', null, ['class' => 'form-control','id'=>'email_verified_at']) !!}
+    {!! Form::text('email_verified_at', null, ['class' => 'form-control','id'=>'email_verified_at', 'disabled']) !!}
 </div>
 
 @push('page_scripts')
@@ -25,18 +25,6 @@
         })
     </script>
 @endpush
-
-<!-- Password Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('password', 'Password:') !!}
-    {!! Form::password('password', ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
-</div>
-
-<!-- Remember Token Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('remember_token', 'Remember Token:') !!}
-    {!! Form::text('remember_token', null, ['class' => 'form-control','maxlength' => 100,'maxlength' => 100]) !!}
-</div>
 
 <!-- Address Field -->
 <div class="form-group col-sm-6">
@@ -70,16 +58,29 @@
 
 <!-- Role Field -->
 <div class="form-group col-sm-6">
-    <div class="form-check">
-        {!! Form::hidden('role', 0, ['class' => 'form-check-input']) !!}
-        {!! Form::checkbox('role', '1', null, ['class' => 'form-check-input']) !!}
-        {!! Form::label('role', 'Role', ['class' => 'form-check-label']) !!}
-    </div>
-</div>
-
-
-<!-- Company Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('company_id', 'Company Id:') !!}
-    {!! Form::number('company_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('role', 'Role:') !!}
+    <select class="form-control" name="role">
+        <option value="{{App\Models\User::ROLE_SUPER_ADMIN}}"
+            @if (isset($user) && $user->role == App\Models\User::ROLE_SUPER_ADMIN) 
+            selected 
+            @endif
+            >Super Admin</option>
+        <option value="{{App\Models\User::ROLE_OPS_ADMIN}}"
+            @if (isset($user) && $user->role == App\Models\User::ROLE_OPS_ADMIN) 
+            selected 
+            @endif
+            >Ops Admin</option>
+        <option value="{{App\Models\User::ROLE_COMPANY_ADMIN}}"
+            @if (isset($user) && $user->role == App\Models\User::ROLE_COMPANY_ADMIN) 
+            selected 
+            @endif>Company Admin</option>
+        <option value="{{App\Models\User::ROLE_MANAGER}}"
+            @if (isset($user) && $user->role == App\Models\User::ROLE_MANAGER) 
+            selected 
+            @endif>Manager</option>
+        <option value="{{App\Models\User::ROLE_STAFF}}"
+            @if (isset($user) && $user->role == App\Models\User::ROLE_STAFF) 
+            selected 
+            @endif>Staff</option>
+    </select>
 </div>

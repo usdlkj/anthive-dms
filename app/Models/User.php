@@ -94,16 +94,12 @@ class User extends Authenticatable
     public static $rules = [
         'name' => 'required|string|max:255',
         'email' => 'required|string|max:255',
-        'email_verified_at' => 'nullable',
-        'password' => 'required|string|max:255',
-        'remember_token' => 'nullable|string|max:100',
         'address' => 'nullable|string|max:255',
         'city' => 'nullable|string|max:255',
         'country' => 'nullable|string|max:255',
         'phone_number' => 'nullable|string|max:255',
         'position' => 'nullable|string|max:255',
-        'role' => 'required|boolean',
-        'company_id' => 'required'
+        'role' => 'required|integer'
     ];
 
     /**
