@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 use Flash;
 use Response;
 
+use App\Models\Project;
+use App\Models\ProjectUser;
+use Illuminate\Support\Facades\Auth;
+use DataTables;
+
 class ProjectController extends AppBaseController
 {
     /** @var  ProjectRepository */
@@ -29,10 +34,32 @@ class ProjectController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $projects = $this->projectRepository->all();
+        if ($request->ajax()) {
+            $data = Project::all();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $action_btn = '<td><div class="btn-group">
+                        <a href="'.route('projects.show', $row['id']).'" class="btn btn-outline-secondary btn-xs">
+                            <i class="far fa-eye"></i>
+                        </a>
+                        <a href="'.route('projects.edit', $row['id']).'" class="btn btn-outline-warning btn-xs">
+                            <i class="far fa-edit"></i>
+                        </a></div></td>';
+                    return $action_btn;
+                })
+                ->addColumn('startDate', function($row) {
+                    return date("d-M-Y", strtotime($row['start_date']));
+                })
+                ->addColumn('projectValue', function($row) {
+                    $project_value = '<td class="text-right">'.number_format($row['project_value']).'</td>';
+                    return $project_value;
+                })
+                ->rawColumns(['action', 'projectValue'])
+                ->make(true);
+        }
 
-        return view('projects.index')
-            ->with('projects', $projects);
+        return view('projects.index');
     }
 
     /**
@@ -57,6 +84,11 @@ class ProjectController extends AppBaseController
         $input = $request->all();
 
         $project = $this->projectRepository->create($input);
+
+        $projectUser = new ProjectUser;
+        $projectUser->user_id = Auth::user()->id;
+        $projectUser->project_id = $project->id;
+        $projectUser->save();
 
         Flash::success('Project saved successfully.');
 

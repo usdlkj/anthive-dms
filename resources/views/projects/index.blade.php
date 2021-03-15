@@ -39,3 +39,51 @@
 
 @endsection
 
+@push('scripts')
+<script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#projects-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "/projects",
+        columns: [{
+                data: 'project_name',
+                name: 'project_name'
+            },
+            {
+                data: 'project_code',
+                name: 'project_code'
+            },
+            {
+                data: 'location',
+                name: 'location'
+            },
+            {
+                data: 'city',
+                name: 'city'
+            },
+            {
+                data: 'country',
+                name: 'country'
+            },
+            {
+                data: 'startDate',
+                name: 'startDate'
+            },
+            {
+                data: 'projectValue',
+                name: 'projectValue'
+            },
+            {
+                data: 'project_owner_id',
+                name: 'project_owner_id'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            }
+        ]
+    });
+});
+</script>
+@endpush

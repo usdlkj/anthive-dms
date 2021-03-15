@@ -39,10 +39,10 @@ class UserController extends AppBaseController
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                     $action_btn = '<td><div class="btn-group">
-                        <a href="/companies/'.$row['company_id'].'/users/'.$row['id'].'" class="btn btn-secondary btn-xs">
+                        <a href="/companies/'.$row['company_id'].'/users/'.$row['id'].'" class="btn btn-outline-secondary btn-xs">
                             <i class="far fa-eye"></i>
                         </a>
-                        <a href="/companies/'.$row['company_id'].'/users/'.$row['id'].'/edit" class="btn btn-warning btn-xs">
+                        <a href="/companies/'.$row['company_id'].'/users/'.$row['id'].'/edit" class="btn btn-outline-warning btn-xs">
                             <i class="far fa-edit"></i>
                         </a></div></td>';
                     return $action_btn;
@@ -57,7 +57,7 @@ class UserController extends AppBaseController
                         default: return 'Staff'; break;
                     }
                 })
-                ->rawColumns(['action', 'roleText'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
 

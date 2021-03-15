@@ -39,13 +39,13 @@ class CompanyController extends AppBaseController
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                         $action_btn = '<td><div class="btn-group">
-                            <a href="'.route('companies.users.index', $row['id']).'" class="btn btn-primary btn-xs">
+                            <a href="'.route('companies.users.index', $row['id']).'" class="btn btn-outline-primary btn-xs">
                                 <i class="far fa-user"></i>
                             </a>
-                            <a href="'.route('companies.show', $row['id']).'" class="btn btn-secondary btn-xs">
+                            <a href="'.route('companies.show', $row['id']).'" class="btn btn-outline-secondary btn-xs">
                                 <i class="far fa-eye"></i>
                             </a>
-                            <a href="'.route('companies.edit', $row['id']).'" class="btn btn-warning btn-xs">
+                            <a href="'.route('companies.edit', $row['id']).'" class="btn btn-outline-warning btn-xs">
                                 <i class="far fa-edit"></i>
                             </a></div></td>';
                         return $action_btn;
