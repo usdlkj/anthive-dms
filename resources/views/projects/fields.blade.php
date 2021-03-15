@@ -16,14 +16,64 @@
     {!! Form::text('description', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
 </div>
 
+<!-- Location Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('location', 'Location:') !!}
+    {!! Form::text('location', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<!-- City Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('city', 'City:') !!}
+    {!! Form::text('city', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<!-- Country Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('country', 'Country:') !!}
+    {!! Form::text('country', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
+</div>
+
+<!-- Start Date Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('start_date', 'Start Date:') !!}
+    {!! Form::text('start_date', null, ['class' => 'form-control','id'=>'start_date']) !!}
+</div>
+
+@push('page_scripts')
+    <script type="text/javascript">
+        $('#start_date').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            useCurrent: true,
+            sideBySide: true
+        })
+    </script>
+@endpush
+
+<!-- End Date Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('end_date', 'End Date:') !!}
+    {!! Form::text('end_date', null, ['class' => 'form-control','id'=>'end_date']) !!}
+</div>
+
+@push('page_scripts')
+    <script type="text/javascript">
+        $('#end_date').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            useCurrent: true,
+            sideBySide: true
+        })
+    </script>
+@endpush
+
+<!-- Project Value Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('project_value', 'Project Value:') !!}
+    {!! Form::number('project_value', null, ['class' => 'form-control']) !!}
+</div>
+
 <!-- Project Owner Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('project_owner_id', 'Project Owner Id:') !!}
     {!! Form::number('project_owner_id', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Submit Field -->
-<div class="form-group col-sm-12">
-    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-    <a href="{{ route('projects.index') }}" class="btn btn-light">Cancel</a>
 </div>

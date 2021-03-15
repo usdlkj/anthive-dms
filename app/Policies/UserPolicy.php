@@ -2,11 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Company;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CompanyPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -30,19 +29,23 @@ class CompanyPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role == User::ROLE_OPS_ADMIN;
+        return $user->role == User::ROLE_OPS_ADMIN ||
+            $user->role == User::ROLE_COMPANY_ADMIN ||
+            $user->role == User::ROLE_MANAGER;
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function view(User $user, Company $company)
+    public function view(User $user, User $model)
     {
-        return $user->role == User::ROLE_OPS_ADMIN;
+        return $user->role == User::ROLE_OPS_ADMIN ||
+            ($user->role == User::ROLE_COMPANY_ADMIN && $user->company_id == $model->company_id) ||
+            ($user->role == User::ROLE_MANAGER && $user->company_id == $model->company_id);
     }
 
     /**
@@ -53,41 +56,47 @@ class CompanyPolicy
      */
     public function create(User $user)
     {
-        return $user->role == User::ROLE_OPS_ADMIN;
+        return $user->role == User::ROLE_OPS_ADMIN ||
+            ($user->role == User::ROLE_COMPANY_ADMIN && $user->company_id == $model->company_id) ||
+            ($user->role == User::ROLE_MANAGER && $user->company_id == $model->company_id);
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function update(User $user, Company $company)
+    public function update(User $user, User $model)
     {
-        return $user->role == User::ROLE_OPS_ADMIN;
+        return $user->role == User::ROLE_OPS_ADMIN ||
+            ($user->role == User::ROLE_COMPANY_ADMIN && $user->company_id == $model->company_id) ||
+            ($user->role == User::ROLE_MANAGER && $user->company_id == $model->company_id);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function delete(User $user, Company $company)
+    public function delete(User $user, User $model)
     {
-        return $user->role == User::ROLE_OPS_ADMIN;
+        return $user->role == User::ROLE_OPS_ADMIN ||
+            ($user->role == User::ROLE_COMPANY_ADMIN && $user->company_id == $model->company_id) ||
+            ($user->role == User::ROLE_MANAGER && $user->company_id == $model->company_id);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function restore(User $user, Company $company)
+    public function restore(User $user, User $model)
     {
         return $user->role == User::ROLE_OPS_ADMIN;
     }
@@ -96,10 +105,10 @@ class CompanyPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Company  $company
+     * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function forceDelete(User $user, Company $company)
+    public function forceDelete(User $user, User $model)
     {
         return false;
     }

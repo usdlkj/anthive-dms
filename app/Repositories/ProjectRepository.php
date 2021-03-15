@@ -8,7 +8,7 @@ use App\Repositories\BaseRepository;
 /**
  * Class ProjectRepository
  * @package App\Repositories
- * @version March 11, 2021, 12:46 pm UTC
+ * @version March 15, 2021, 4:45 am UTC
 */
 
 class ProjectRepository extends BaseRepository
@@ -20,6 +20,12 @@ class ProjectRepository extends BaseRepository
         'project_name',
         'project_code',
         'description',
+        'location',
+        'city',
+        'country',
+        'start_date',
+        'end_date',
+        'project_value',
         'project_owner_id'
     ];
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Project
  * @package App\Models
- * @version March 11, 2021, 12:46 pm UTC
+ * @version March 15, 2021, 4:45 am UTC
  *
  * @property \App\Models\Company $projectOwner
  * @property \Illuminate\Database\Eloquent\Collection $documents
@@ -19,6 +19,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $project_name
  * @property string $project_code
  * @property string $description
+ * @property string $location
+ * @property string $city
+ * @property string $country
+ * @property string $start_date
+ * @property string $end_date
+ * @property integer $project_value
  * @property integer $project_owner_id
  */
 class Project extends Model
@@ -41,6 +47,12 @@ class Project extends Model
         'project_name',
         'project_code',
         'description',
+        'location',
+        'city',
+        'country',
+        'start_date',
+        'end_date',
+        'project_value',
         'project_owner_id'
     ];
 
@@ -54,6 +66,12 @@ class Project extends Model
         'project_name' => 'string',
         'project_code' => 'string',
         'description' => 'string',
+        'location' => 'string',
+        'city' => 'string',
+        'country' => 'string',
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'project_value' => 'integer',
         'project_owner_id' => 'integer'
     ];
 
@@ -66,6 +84,12 @@ class Project extends Model
         'project_name' => 'required|string|max:255',
         'project_code' => 'required|string|max:255',
         'description' => 'nullable|string|max:255',
+        'location' => 'nullable|string|max:255',
+        'city' => 'nullable|string|max:255',
+        'country' => 'nullable|string|max:255',
+        'start_date' => 'required',
+        'end_date' => 'nullable',
+        'project_value' => 'required|integer',
         'project_owner_id' => 'required',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',

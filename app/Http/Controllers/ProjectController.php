@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\ProjectDataTable;
-use App\Http\Requests;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreateProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Repositories\ProjectRepository;
-use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
+use Flash;
 use Response;
-use Datatables;
 
 class ProjectController extends AppBaseController
 {
@@ -27,15 +24,15 @@ class ProjectController extends AppBaseController
      * Display a listing of the Project.
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            return Datatables::of((new ProjectDataTable())->get())->make(true);
-        }
-    
-        return view('projects.index');
+        $projects = $this->projectRepository->all();
+
+        return view('projects.index')
+            ->with('projects', $projects);
     }
 
     /**
@@ -69,7 +66,7 @@ class ProjectController extends AppBaseController
     /**
      * Display the specified Project.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -89,7 +86,7 @@ class ProjectController extends AppBaseController
     /**
      * Show the form for editing the specified Project.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -109,7 +106,7 @@ class ProjectController extends AppBaseController
     /**
      * Update the specified Project in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateProjectRequest $request
      *
      * @return Response
@@ -134,7 +131,9 @@ class ProjectController extends AppBaseController
     /**
      * Remove the specified Project from storage.
      *
-     * @param  int $id
+     * @param int $id
+     *
+     * @throws \Exception
      *
      * @return Response
      */
@@ -142,8 +141,16 @@ class ProjectController extends AppBaseController
     {
         $project = $this->projectRepository->find($id);
 
-        $project->delete();
+        if (empty($project)) {
+            Flash::error('Project not found');
 
-        return $this->sendSuccess('Project deleted successfully.');
+            return redirect(route('projects.index'));
+        }
+
+        $this->projectRepository->delete($id);
+
+        Flash::success('Project deleted successfully.');
+
+        return redirect(route('projects.index'));
     }
 }

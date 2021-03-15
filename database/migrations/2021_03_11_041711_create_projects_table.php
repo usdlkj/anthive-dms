@@ -18,6 +18,12 @@ class CreateProjectsTable extends Migration
             $table->string('project_name');
             $table->string('project_code')->unique();
             $table->string('description')->nullable();
+            $table->string('location')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->unsignedInteger('project_value');
             $table->unsignedBigInteger('project_owner_id');
             $table->foreign('project_owner_id')->references('id')->on('companies');
             $table->timestamps();
