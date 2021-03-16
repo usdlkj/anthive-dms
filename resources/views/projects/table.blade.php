@@ -9,7 +9,7 @@
                 <th>Country</th>
                 <th>Start Date</th>
                 <th>Project Value</th>
-                <th>Project Owner Id</th>
+                <th>Project Owner</th>
                 <th>Action</th>
             </tr>
         </thead>

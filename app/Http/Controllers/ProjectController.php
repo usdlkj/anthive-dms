@@ -14,6 +14,7 @@ use App\Models\Project;
 use App\Models\ProjectUser;
 use Illuminate\Support\Facades\Auth;
 use DataTables;
+use DB;
 
 class ProjectController extends AppBaseController
 {
@@ -35,11 +36,18 @@ class ProjectController extends AppBaseController
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Project::all();
+            $data = DB::table('projects')
+                        ->join('companies', 'projects.project_owner_id', '=', 'companies.id')
+                        ->select('projects.*', 'companies.company_name')
+                        ->get();
+            $data = json_decode(json_encode($data), true);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                     $action_btn = '<td><div class="btn-group">
+                        <a href="/projects/'.$row['id'].'/fields" class="btn btn-outline-primary btn-xs">
+                            <i class="fas fa-table"></i>
+                        </a>
                         <a href="'.route('projects.show', $row['id']).'" class="btn btn-outline-secondary btn-xs">
                             <i class="far fa-eye"></i>
                         </a>

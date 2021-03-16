@@ -1,33 +1,81 @@
 @extends('layouts.app')
-@section('title')
-    Project Fields 
-@endsection
-@section('css')
-    <link href="{{ asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
-@endsection
+
 @section('content')
-    <section class="section">
-        <div class="section-header">
-            <h1>Project Fields</h1>
-            <div class="section-header-breadcrumb">
-                <a href="{{ route('projectFields.create')}}" class="btn btn-primary form-btn">Project Field <i class="fas fa-plus"></i></a>
-            </div>
-        </div>
-        <div class="section-body">
-            <div class="card">
-                <div class="card-body">
-                    @include('project_fields.table')
-                    @include('project_fields.templates.templates')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Project Fields</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-primary float-right"
+                       href="/projects/{{$projectId}}/fields/create">
+                        Add New
+                    </a>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="content px-3">
+
+        @include('flash::message')
+
+        <div class="clearfix"></div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                @include('project_fields.table')
+
+                <div class="card-footer clearfix float-right">
+                    <div class="float-right">
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 @endsection
-@section('scripts')
-    <script>
-        let recordsURL = "{{ route('projectFields.index') }}/";
-    </script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>
-    <script src="{{mix('assets/js/project_fields/project_fields.js')}}"></script>
-@endsection
+
+@push('scripts')
+<script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#projectFields-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "/projects/{{$projectId}}/fields",
+        columns: [{
+                data: 'field_code',
+                name: 'field_code'
+            },
+            {
+                data: 'fieldTypeText',
+                name: 'fieldTypeText'
+            },
+            {
+                data: 'field_text',
+                name: 'field_text'
+            },
+            {
+                data: 'visibleText',
+                name: 'visibleText'
+            },
+            {
+                data: 'mandatoryText',
+                name: 'mandatoryText'
+            },
+            {
+                data: 'sequence',
+                name: 'sequence'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            }
+        ]
+    });
+});
+</script>
+@endpush

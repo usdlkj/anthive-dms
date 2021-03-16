@@ -27,7 +27,7 @@ Route::resource('companies.users', App\Http\Controllers\UserController::class);
 
 Route::resource('projects', App\Http\Controllers\ProjectController::class);
 
-Route::resource('projectFields', App\Http\Controllers\ProjectFieldController::class);
+Route::resource('projects.fields', App\Http\Controllers\ProjectFieldController::class);
 
 Route::resource('projectUsers', App\Http\Controllers\ProjectUserController::class);
 
@@ -44,34 +44,6 @@ Route::resource('documentFields', App\Http\Controllers\DocumentFieldController::
 Route::resource('mailTypes', App\Http\Controllers\MailTypeController::class);
 
 Route::resource('mails', App\Http\Controllers\MailController::class);
-
-Route::resource('mailUsers', App\Http\Controllers\MailUserController::class);
-
-Route::resource('mailAttachments', App\Http\Controllers\MailAttachmentController::class);
-
-Route::resource('projectFields', App\Http\Controllers\ProjectFieldController::class);
-
-Route::resource('projectUsers', App\Http\Controllers\ProjectUserController::class);
-
-Route::resource('selectValues', App\Http\Controllers\SelectValueController::class);
-
-Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
-
-Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
-
-Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
-
-Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
-
-Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
-
-Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
-
-Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
-
-Route::resource('documentFields', App\Http\Controllers\DocumentFieldController::class);
-
-Route::resource('mailTypes', App\Http\Controllers\MailTypeController::class);
 
 Route::resource('mailUsers', App\Http\Controllers\MailUserController::class);
 

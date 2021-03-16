@@ -1,9 +1,3 @@
-<!-- Project Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('project_id', 'Project Id:') !!}
-    {!! Form::number('project_id', null, ['class' => 'form-control']) !!}
-</div>
-
 <!-- Field Code Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('field_code', 'Field Code:') !!}
@@ -12,11 +6,15 @@
 
 <!-- Field Type Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('field_type', 'Field Type:') !!}
-    <label class="checkbox-inline">
-        {!! Form::hidden('field_type', 0) !!}
-        {!! Form::checkbox('field_type', '1', null) !!}
-    </label>
+    {!! Form::label('field_type', 'Field Type') !!}
+    <select name="field_type" class="form-control">
+        <option value="{{\App\Models\ProjectField::FIELD_SHORT_TEXT}}">Short Text</option>
+        <option value="{{\App\Models\ProjectField::FIELD_TEXT}}">Text</option>
+        <option value="{{\App\Models\ProjectField::FIELD_TEXT_AREA}}">Text Area</option>
+        <option value="{{\App\Models\ProjectField::FIELD_DATE}}">Date</option>
+        <option value="{{\App\Models\ProjectField::FIELD_SINGLE_SELECT}}">Single Select</option>
+        <option value="{{\App\Models\ProjectField::FIELD_MULTI_SELECT}}">Multi Select</option>
+    </select>
 </div>
 
 
@@ -28,36 +26,30 @@
 
 <!-- Visible Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('visible', 'Visible:') !!}
-    <label class="checkbox-inline">
-        {!! Form::hidden('visible', 0) !!}
-        {!! Form::checkbox('visible', '1', null) !!}
-    </label>
+    <label for="visible">Field is Visible</label>
+    <select name="visible" class="form-control">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+    </select>
 </div>
 
 
 <!-- Mandatory Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('mandatory', 'Mandatory:') !!}
-    <label class="checkbox-inline">
-        {!! Form::hidden('mandatory', 0) !!}
-        {!! Form::checkbox('mandatory', '1', null) !!}
-    </label>
+    <label for="mandatory">Field is Mandatory</label>
+    <select name="mandatory" class="form-control">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+    </select>
 </div>
 
 
 <!-- Sequence Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('sequence', 'Sequence:') !!}
-    <label class="checkbox-inline">
-        {!! Form::hidden('sequence', 0) !!}
-        {!! Form::checkbox('sequence', '1', null) !!}
-    </label>
-</div>
-
-
-<!-- Submit Field -->
-<div class="form-group col-sm-12">
-    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-    <a href="{{ route('projectFields.index') }}" class="btn btn-light">Cancel</a>
+    <label for="sequence">Field Sequence</label>
+    <select name="sequence" class="form-control">
+        @for ($i = 0; $i <= $count; $i++)
+        <option value="{{$i+1}}">{{$i+1}}</option>
+        @endfor
+    </select>
 </div>

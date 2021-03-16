@@ -75,8 +75,8 @@ $(document).ready(function() {
                 name: 'projectValue'
             },
             {
-                data: 'project_owner_id',
-                name: 'project_owner_id'
+                data: 'company_name',
+                name: 'company_name'
             },
             {
                 data: 'action',

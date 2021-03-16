@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class ProjectField
  * @package App\Models
- * @version March 11, 2021, 12:48 pm UTC
+ * @version March 16, 2021, 6:54 am UTC
  *
  * @property \App\Models\Project $project
  * @property \Illuminate\Database\Eloquent\Collection $selectValues
@@ -29,10 +30,12 @@ class ProjectField extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
-
-
+    const FIELD_SHORT_TEXT = 1;
+    const FIELD_TEXT = 2;
+    const FIELD_TEXT_AREA = 3;
+    const FIELD_DATE = 4;
+    const FIELD_SINGLE_SELECT = 5;
+    const FIELD_MULTI_SELECT =6;
 
     public $fillable = [
         'project_id',
@@ -53,11 +56,11 @@ class ProjectField extends Model
         'id' => 'integer',
         'project_id' => 'integer',
         'field_code' => 'string',
-        'field_type' => 'boolean',
+        'field_type' => 'integer',
         'field_text' => 'string',
         'visible' => 'boolean',
         'mandatory' => 'boolean',
-        'sequence' => 'boolean'
+        'sequence' => 'integer'
     ];
 
     /**
@@ -66,15 +69,12 @@ class ProjectField extends Model
      * @var array
      */
     public static $rules = [
-        'project_id' => 'required',
         'field_code' => 'required|string|max:10',
-        'field_type' => 'required|boolean',
+        'field_type' => 'required|integer',
         'field_text' => 'required|string|max:20',
         'visible' => 'required|boolean',
         'mandatory' => 'required|boolean',
-        'sequence' => 'required|boolean',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'sequence' => 'required|integer'
     ];
 
     /**

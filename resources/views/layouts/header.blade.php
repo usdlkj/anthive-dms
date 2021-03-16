@@ -7,9 +7,15 @@
             </li>
             @can('viewAny', \App\Models\Company::class)
             <li class="nav-item">
-                <a href="{{ route('companies.index') }}"
-                class="nav-link {{ Request::is('companies*') ? 'active' : '' }}">
+                <a href="{{ route('companies.index') }}" class="nav-link">
                     <p>Companies</p>
+                </a>
+            </li>
+            @endcan
+            @can('viewAny', \App\Models\Project::class)
+            <li class="nav-item">
+                <a href="{{ route('projects.index') }}" class="nav-link">
+                    <p>Projects</p>
                 </a>
             </li>
             @endcan
