@@ -27,11 +27,8 @@
                     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}&nbsp;
                     {!! Form::close() !!}
                     <a href="{{ route('companies.index') }}" class="btn btn-default">Cancel</a>&nbsp;
-                    <form action="/companies/{{$company->id}}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger">Delete</button>
-                    </form>
+                    {!! Form::model($company, ['route' => ['companies.destroy', $company->id], 'method' => 'delete']) !!}
+                    {!! Form::submit('Delete', ['class' => 'btn btn-outline-danger']) !!}
                 </div>
             </div>
 

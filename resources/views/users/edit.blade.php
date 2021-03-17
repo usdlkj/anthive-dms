@@ -24,15 +24,12 @@
                     @include('users.fields')
                 </div>
 
-                <div class="row">
+                <div class="row" style="padding-left: 7px">
                     <button type="submit" class="btn btn-primary">Save</button>&nbsp;
                     {!! Form::close() !!}
                     <a href="/companies/{{$user->company_id}}/users" class="btn btn-default">Cancel</a>&nbsp;
-                    <form action="/companies/{{$user->company_id}}/users/{{$user->id}}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-outline-danger">Delete</button>
-                    </form>
+                    {!! Form::model($user, ['route' => ['companies.users.destroy', $user->company_id, $user->id], 'method' => 'delete']) !!}
+                    {!! Form::submit('Delete', ['class' => 'btn btn-outline-danger']) !!}
                 </div>
             </div>
         </div>
