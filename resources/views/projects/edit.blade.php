@@ -23,15 +23,14 @@
                 <div class="row">
                     @include('projects.fields')
                 </div>
+                <div class="row" style="padding-left: 7px">
+                    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}&nbsp;
+                    {!! Form::close() !!}
+                    <a href="{{ route('projects.index') }}" class="btn btn-default">Cancel</a>&nbsp;
+                    {!! Form::model($project, ['route' => ['projects.destroy', $project->id], 'method' => 'delete']) !!}
+                    {!! Form::submit('Delete', ['class' => 'btn btn-outline-danger']) !!}
+                </div>
             </div>
-
-            <div class="card-footer">
-                {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('projects.index') }}" class="btn btn-default">Cancel</a>
-            </div>
-
-           {!! Form::close() !!}
-
         </div>
     </div>
 @endsection
