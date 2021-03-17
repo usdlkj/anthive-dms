@@ -24,6 +24,7 @@ class CreateProjectFieldsTable extends Migration
             $table->boolean('mandatory');
             $table->unsignedTinyInteger('sequence');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

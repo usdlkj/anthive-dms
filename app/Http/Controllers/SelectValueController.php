@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\SelectValueDataTable;
-use App\Http\Requests;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreateSelectValueRequest;
 use App\Http\Requests\UpdateSelectValueRequest;
 use App\Repositories\SelectValueRepository;
-use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
+use Flash;
 use Response;
-use Datatables;
+
+use DB;
+use DataTables;
 
 class SelectValueController extends AppBaseController
 {
@@ -27,15 +27,36 @@ class SelectValueController extends AppBaseController
      * Display a listing of the SelectValue.
      *
      * @param Request $request
+     *
      * @return Response
      */
-    public function index(Request $request)
+    public function index($projectId, $fieldId, Request $request)
     {
         if ($request->ajax()) {
-            return Datatables::of((new SelectValueDataTable())->get())->make(true);
+            $data = DB::table('select_values')
+                        ->join('project_fields', 'select_values.project_field_id', '=', 'project_fields.id')
+                        ->select('select_values.*', 'project_fields.project_id', 'project_fields.field_text')
+                        ->get();
+            $data = json_decode(json_encode($data), true);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $action_btn = '<td><div class="btn-group">
+                        <a href="/projects/'.$row['project_id'].'/fields/'.$row['project_field_id'].'/selects/'.$row['id'].'" class="btn btn-outline-secondary btn-xs">
+                            <i class="far fa-eye"></i>
+                        </a>
+                        <a href="/projects/'.$row['project_id'].'/fields/'.$row['project_field_id'].'/selects/'.$row['id'].'/edit" class="btn btn-outline-warning btn-xs">
+                            <i class="far fa-edit"></i>
+                        </a></div></td>';
+                    return $action_btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
-    
-        return view('select_values.index');
+
+        return view('select_values.index')
+            ->with('projectId', $projectId)
+            ->with('fieldId', $fieldId);
     }
 
     /**
@@ -43,9 +64,11 @@ class SelectValueController extends AppBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($projectId, $fieldId)
     {
-        return view('select_values.create');
+        return view('select_values.create')
+            ->with('projectId', $projectId)
+            ->with('fieldId', $fieldId);
     }
 
     /**
@@ -55,25 +78,26 @@ class SelectValueController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateSelectValueRequest $request)
+    public function store($projectId, $fieldId, CreateSelectValueRequest $request)
     {
         $input = $request->all();
+        $input['project_field_id'] = $fieldId;
 
         $selectValue = $this->selectValueRepository->create($input);
 
         Flash::success('Select Value saved successfully.');
 
-        return redirect(route('selectValues.index'));
+        return redirect(route('projects.fields.selects.index', [$projectId, $fieldId]));
     }
 
     /**
      * Display the specified SelectValue.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
-    public function show($id)
+    public function show($projectId, $fieldId, $id)
     {
         $selectValue = $this->selectValueRepository->find($id);
 
@@ -83,17 +107,20 @@ class SelectValueController extends AppBaseController
             return redirect(route('selectValues.index'));
         }
 
-        return view('select_values.show')->with('selectValue', $selectValue);
+        return view('select_values.show')
+            ->with('selectValue', $selectValue)
+            ->with('projectId', $projectId)
+            ->with('fieldId', $fieldId);
     }
 
     /**
      * Show the form for editing the specified SelectValue.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($projectId, $fieldId, $id)
     {
         $selectValue = $this->selectValueRepository->find($id);
 
@@ -103,18 +130,21 @@ class SelectValueController extends AppBaseController
             return redirect(route('selectValues.index'));
         }
 
-        return view('select_values.edit')->with('selectValue', $selectValue);
+        return view('select_values.edit')
+            ->with('selectValue', $selectValue)
+            ->with('projectId', $projectId)
+            ->with('fieldId', $fieldId);
     }
 
     /**
      * Update the specified SelectValue in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateSelectValueRequest $request
      *
      * @return Response
      */
-    public function update($id, UpdateSelectValueRequest $request)
+    public function update($projectId, $fieldId, $id, UpdateSelectValueRequest $request)
     {
         $selectValue = $this->selectValueRepository->find($id);
 
@@ -128,13 +158,15 @@ class SelectValueController extends AppBaseController
 
         Flash::success('Select Value updated successfully.');
 
-        return redirect(route('selectValues.index'));
+        return redirect(route('projects.fields.selects.index', [$projectId, $fieldId]));
     }
 
     /**
      * Remove the specified SelectValue from storage.
      *
-     * @param  int $id
+     * @param int $id
+     *
+     * @throws \Exception
      *
      * @return Response
      */
@@ -142,8 +174,16 @@ class SelectValueController extends AppBaseController
     {
         $selectValue = $this->selectValueRepository->find($id);
 
-        $selectValue->delete();
+        if (empty($selectValue)) {
+            Flash::error('Select Value not found');
 
-        return $this->sendSuccess('Select Value deleted successfully.');
+            return redirect(route('selectValues.index'));
+        }
+
+        $this->selectValueRepository->delete($id);
+
+        Flash::success('Select Value deleted successfully.');
+
+        return redirect(route('selectValues.index'));
     }
 }

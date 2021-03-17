@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class ProjectField extends Model
 {
+    use SoftDeletes;
+    
     use HasFactory;
 
     public $table = 'project_fields';

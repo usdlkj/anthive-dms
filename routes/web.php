@@ -29,9 +29,9 @@ Route::resource('projects', App\Http\Controllers\ProjectController::class);
 
 Route::resource('projects.fields', App\Http\Controllers\ProjectFieldController::class);
 
-Route::resource('projectUsers', App\Http\Controllers\ProjectUserController::class);
+Route::resource('projects.fields.selects', App\Http\Controllers\SelectValueController::class);
 
-Route::resource('selectValues', App\Http\Controllers\SelectValueController::class);
+Route::resource('projectUsers', App\Http\Controllers\ProjectUserController::class);
 
 Route::resource('files', App\Http\Controllers\FileController::class);
 

@@ -1,33 +1,69 @@
 @extends('layouts.app')
-@section('title')
-    Select Values 
-@endsection
-@section('css')
-    <link href="{{ asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
-@endsection
+
 @section('content')
-    <section class="section">
-        <div class="section-header">
-            <h1>Select Values</h1>
-            <div class="section-header-breadcrumb">
-                <a href="{{ route('selectValues.create')}}" class="btn btn-primary form-btn">Select Value <i class="fas fa-plus"></i></a>
-            </div>
-        </div>
-        <div class="section-body">
-            <div class="card">
-                <div class="card-body">
-                    @include('select_values.table')
-                    @include('select_values.templates.templates')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Select Values</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-primary float-right"
+                       href="/projects/{{$projectId}}/fields/{{$fieldId}}/selects/create">
+                        Add New
+                    </a>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="content px-3">
+
+        @include('flash::message')
+
+        <div class="clearfix"></div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                @include('select_values.table')
+
+                <div class="card-footer clearfix float-right">
+                    <div class="float-right">
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 @endsection
-@section('scripts')
-    <script>
-        let recordsURL = "{{ route('selectValues.index') }}/";
-    </script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>
-    <script src="{{mix('assets/js/select_values/select_values.js')}}"></script>
-@endsection
+
+@push('scripts')
+<script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#selectValues-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "/projects/{{$projectId}}/fields/{{$fieldId}}/selects",
+        columns: [{
+                data: 'field_text',
+                name: 'field_text'
+            },
+            {
+                data: 'value_code',
+                name: 'value_code'
+            },
+            {
+                data: 'value_text',
+                name: 'value_text'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            }
+        ]
+    });
+});
+</script>
+@endpush

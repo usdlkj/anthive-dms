@@ -20,6 +20,7 @@ class CreateSelectValuesTable extends Migration
             $table->string('value_code', 20);
             $table->string('value_text', 100);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -37,7 +37,12 @@ class ProjectFieldController extends AppBaseController
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
-                    $action_btn = '<td><div class="btn-group">
+                    $selectBtn = $row['field_type'] == ProjectField::FIELD_SINGLE_SELECT || $row['field_type'] == ProjectField::FIELD_MULTI_SELECT ?
+                        '<a href="/projects/'.$row['project_id'].'/fields/'.$row['id'].'/selects" class="btn btn-outline-primary btn-xs">
+                            <i class="fas fa-table"></i>
+                        </a>' : '';
+                    
+                    $action_btn = '<td><div class="btn-group">'.$selectBtn.'
                         <a href="/projects/'.$row['project_id'].'/fields/'.$row['id'].'" class="btn btn-outline-secondary btn-xs">
                             <i class="far fa-eye"></i>
                         </a>

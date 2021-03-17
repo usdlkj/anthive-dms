@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Eloquent as Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class SelectValue
  * @package App\Models
- * @version March 11, 2021, 12:58 pm UTC
+ * @version March 17, 2021, 8:53 am UTC
  *
  * @property \App\Models\ProjectField $projectField
  * @property integer $project_field_id
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class SelectValue extends Model
 {
+    use SoftDeletes;
+
     use HasFactory;
 
     public $table = 'select_values';
@@ -53,7 +56,6 @@ class SelectValue extends Model
      * @var array
      */
     public static $rules = [
-        'project_field_id' => 'required',
         'value_code' => 'required|string|max:20',
         'value_text' => 'required|string|max:100',
         'created_at' => 'nullable',
