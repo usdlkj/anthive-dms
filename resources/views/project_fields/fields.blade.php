@@ -49,7 +49,11 @@
     <label for="sequence">Field Sequence</label>
     <select name="sequence" class="form-control">
         @for ($i = 0; $i <= $count; $i++)
-        <option value="{{$i+1}}">{{$i+1}}</option>
+        <option value="{{$i+1}}"
+            @if ((isset($projectField) && $projectField->id == $i+1) || (!isset($projectField) && $i == $count))
+            selected
+            @endif
+        >{{$i+1}}</option>
         @endfor
     </select>
 </div>
