@@ -23,7 +23,7 @@
                 <div class="row">
                     @include('companies.fields')
                 </div>
-                <div class="row">
+                <div class="row" style="padding-left: 7px">
                     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}&nbsp;
                     {!! Form::close() !!}
                     <a href="{{ route('companies.index') }}" class="btn btn-default">Cancel</a>&nbsp;
@@ -33,6 +33,10 @@
                         <button type="submit" class="btn btn-outline-danger">Delete</button>
                     </form>
                 </div>
+            </div>
+
+            <div class="card-footer">
+
             </div>
         </div>
     </div>
