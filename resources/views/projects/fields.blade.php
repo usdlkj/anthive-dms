@@ -72,8 +72,15 @@
     {!! Form::number('project_value', null, ['class' => 'form-control']) !!}
 </div>
 
-<!-- Project Owner Id Field -->
+<!-- Project Owner Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('project_owner_id', 'Project Owner Id:') !!}
-    {!! Form::number('project_owner_id', null, ['class' => 'form-control']) !!}
+    <label for="project_owner">Project Owner</label>
+    <select name="project_owner" class="form-control">
+        @foreach ($companies as $company)
+        <option value="{{$company->id}}" 
+            @if (isset($project) && $project->project_owner_id == $company->id) 
+                selected 
+            @endif>{{$company->company_name}}</option>
+        @endforeach
+    </select>
 </div>

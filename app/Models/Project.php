@@ -90,7 +90,7 @@ class Project extends Model
         'start_date' => 'required',
         'end_date' => 'nullable',
         'project_value' => 'required|integer',
-        'project_owner_id' => 'required',
+        'project_owner' => 'required',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'

@@ -77,7 +77,8 @@ class ProjectController extends AppBaseController
      */
     public function create()
     {
-        return view('projects.create');
+        return view('projects.create')
+            ->with('companies', \App\Models\Company::all());
     }
 
     /**
@@ -90,6 +91,7 @@ class ProjectController extends AppBaseController
     public function store(CreateProjectRequest $request)
     {
         $input = $request->all();
+        $input['project_owner_id'] = $input['project_owner'];
 
         $project = $this->projectRepository->create($input);
 
@@ -140,7 +142,9 @@ class ProjectController extends AppBaseController
             return redirect(route('projects.index'));
         }
 
-        return view('projects.edit')->with('project', $project);
+        return view('projects.edit')
+            ->with('project', $project)
+            ->with('companies', \App\Models\Company::all());
     }
 
     /**
@@ -161,7 +165,9 @@ class ProjectController extends AppBaseController
             return redirect(route('projects.index'));
         }
 
-        $project = $this->projectRepository->update($request->all(), $id);
+        $input = $request->all();
+        $input['project_owner_id'] = $input['project_owner'];
+        $project = $this->projectRepository->update($input, $id);
 
         Flash::success('Project updated successfully.');
 
