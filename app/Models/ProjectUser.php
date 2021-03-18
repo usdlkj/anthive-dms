@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class ProjectUser
  * @package App\Models
- * @version March 11, 2021, 12:51 pm UTC
+ * @version March 18, 2021, 6:43 am UTC
  *
  * @property \App\Models\Project $project
  * @property \App\Models\User $user
@@ -50,8 +50,6 @@ class ProjectUser extends Model
      * @var array
      */
     public static $rules = [
-        'project_id' => 'required',
-        'user_id' => 'required',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];

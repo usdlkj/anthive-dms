@@ -1,32 +1,41 @@
 @extends('layouts.app')
-@section('title')
-    Create Project User 
-@endsection
+
 @section('content')
-    <section class="section">
-        <div class="section-header">
-            <h3 class="page__heading m-0">New Project User</h3>
-            <div class="filter-container section-header-breadcrumb row justify-content-md-end">
-                <a href="{{ route('projectUsers.index') }}" class="btn btn-primary">Back</a>
-            </div>
-        </div>
-        <div class="content">
-            @include('stisla-templates::common.errors')
-            <div class="section-body">
-               <div class="row">
-                   <div class="col-lg-12">
-                       <div class="card">
-                           <div class="card-body ">
-                                {!! Form::open(['route' => 'projectUsers.store']) !!}
-                                    <div class="row">
-                                        @include('project_users.fields')
-                                    </div>
-                                {!! Form::close() !!}
-                           </div>
-                       </div>
-                   </div>
-               </div>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <h1>{{$project->project_name}} Add User</h1>
+                </div>
             </div>
         </div>
     </section>
+
+    <div class="content px-3">
+
+        @include('adminlte-templates::common.errors')
+
+        <div class="card col-sm-6">
+
+            {!! Form::open(['route' => ['projects.users.store', $project->id]]) !!}
+
+            <div class="card-body">
+
+                <div class="row">
+                    @include('project_users.fields')
+                </div>
+
+                <div class="row" style="padding-left: 7px">
+                    {!! Form::submit('Add User', ['class' => 'btn btn-primary']) !!}&nbsp;
+                    <a href="{{ route('projects.users.index', [$project->id]) }}" class="btn btn-default">Cancel</a>
+                </div>
+
+            </div>
+
+            
+
+            {!! Form::close() !!}
+
+        </div>
+    </div>
 @endsection

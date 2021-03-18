@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\ProjectUserDataTable;
-use App\Http\Requests;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreateProjectUserRequest;
 use App\Http\Requests\UpdateProjectUserRequest;
 use App\Repositories\ProjectUserRepository;
-use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
+use Flash;
 use Response;
-use Datatables;
+
+use DB;
+use DataTables;
+use App\Models\ProjectUser;
+use App\Models\Project;
 
 class ProjectUserController extends AppBaseController
 {
@@ -27,15 +29,38 @@ class ProjectUserController extends AppBaseController
      * Display a listing of the ProjectUser.
      *
      * @param Request $request
+     *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $projectId)
     {
         if ($request->ajax()) {
-            return Datatables::of((new ProjectUserDataTable())->get())->make(true);
+            $data = DB::table('project_user')
+                        ->where('project_id', '=', $projectId)
+                        ->join('users', 'project_user.user_id', '=', 'users.id')
+                        ->select('project_user.*', 'users.name')
+                        ->get();
+            $data = json_decode(json_encode($data), true);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $action_btn = '<td><div class="btn-group">
+                        <form action="/projects/'.$row['project_id'].'/users/'.$row['user_id'].'" method="POST">
+                        <input name="_method" type="hidden" value="DELETE">
+                        <input name="_token" type="hidden" value="'.csrf_token().'">
+                        <button type="submit" class="btn btn-outline-danger btn-xs">
+                            <i class="fas fa-user-minus"></i>
+                        </button>
+                        </form></div></td>';
+                    return $action_btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
-    
-        return view('project_users.index');
+
+        $project = Project::find($projectId);
+
+        return view('project_users.index')->with('project', $project);
     }
 
     /**
@@ -43,9 +68,13 @@ class ProjectUserController extends AppBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($projectId)
     {
-        return view('project_users.create');
+        $project = Project::find($projectId);
+        $users = \App\Models\User::all();
+        return view('project_users.create')
+                ->with('project', $project)
+                ->with('users', $users);
     }
 
     /**
@@ -55,32 +84,35 @@ class ProjectUserController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateProjectUserRequest $request)
+    public function store($projectId, CreateProjectUserRequest $request)
     {
         $input = $request->all();
+        $input['project_id'] = $projectId;
 
         $projectUser = $this->projectUserRepository->create($input);
 
         Flash::success('Project User saved successfully.');
 
-        return redirect(route('projectUsers.index'));
+        return redirect(route('projects.users.index', $projectId));
     }
 
     /**
      * Display the specified ProjectUser.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
-    public function show($id)
+    public function show($projectId, $userId)
     {
-        $projectUser = $this->projectUserRepository->find($id);
+        $projectUser = ProjectUser::where('project_id', $projectId)
+            ->where('user_id', $userId)
+            ->first();
 
         if (empty($projectUser)) {
             Flash::error('Project User not found');
 
-            return redirect(route('projectUsers.index'));
+            return redirect(route('projects.users.index', $projectId));
         }
 
         return view('project_users.show')->with('projectUser', $projectUser);
@@ -89,18 +121,20 @@ class ProjectUserController extends AppBaseController
     /**
      * Show the form for editing the specified ProjectUser.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
-    public function edit($id)
+    public function edit($projectId, $userId)
     {
-        $projectUser = $this->projectUserRepository->find($id);
+        $projectUser = ProjectUser::where('project_id', $projectId)
+            ->where('user_id', $userId)
+            ->first();
 
         if (empty($projectUser)) {
             Flash::error('Project User not found');
 
-            return redirect(route('projectUsers.index'));
+            return redirect(route('projects.users.index', $projectId));
         }
 
         return view('project_users.edit')->with('projectUser', $projectUser);
@@ -109,7 +143,7 @@ class ProjectUserController extends AppBaseController
     /**
      * Update the specified ProjectUser in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateProjectUserRequest $request
      *
      * @return Response
@@ -121,29 +155,39 @@ class ProjectUserController extends AppBaseController
         if (empty($projectUser)) {
             Flash::error('Project User not found');
 
-            return redirect(route('projectUsers.index'));
+            return redirect(route('projects.users.index', $projectId));
         }
 
         $projectUser = $this->projectUserRepository->update($request->all(), $id);
 
         Flash::success('Project User updated successfully.');
 
-        return redirect(route('projectUsers.index'));
+        return redirect(route('projects.users.index', $projectId));
     }
 
     /**
      * Remove the specified ProjectUser from storage.
      *
-     * @param  int $id
+     * @param int $id
+     *
+     * @throws \Exception
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($projectId, $userId)
     {
-        $projectUser = $this->projectUserRepository->find($id);
+        $projectUser = ProjectUser::where('project_id', $projectId)
+                                        ->where('user_id', $userId)
+                                        ->delete();
 
-        $projectUser->delete();
+        if (empty($projectUser)) {
+            Flash::error('Project User not found');
 
-        return $this->sendSuccess('Project User deleted successfully.');
+            return redirect(route('projects.users.index', $projectId));
+        }
+
+        Flash::success('Project User deleted successfully.');
+
+        return redirect(route('projects.users.index', $projectId));
     }
 }
