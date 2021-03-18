@@ -24,7 +24,7 @@
         "inView": true
     },
     {
-        "name": "file_hash",
+        "name": "hash_name",
         "dbType": "string,255",
         "htmlType": "text",
         "validations": "required|string|max:255|string|max:255",

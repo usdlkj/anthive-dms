@@ -1,10 +1,16 @@
-<table class="table table-responsive-sm table-striped table-bordered" id="filesTable">
-    <thead>
-    <tr>
-        <th scope="col">file_name</th><th scope="col">file_hash</th><th scope="col">location</th><th scope="col">file_size</th><th scope="col">extension</th>
-        <th scope="col">Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table" id="files-table">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Hash Name</th>
+                <th>Location</th>
+                <th>File Size</th>
+                <th>Extension</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>

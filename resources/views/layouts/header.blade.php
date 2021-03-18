@@ -19,6 +19,13 @@
                 </a>
             </li>
             @endcan
+            @can('viewAny', \App\Models\File::class)
+            <li class="nav-item">
+                <a href="{{ route('files.index') }}" class="nav-link">
+                    <p>Files</p>
+                </a>
+            </li>
+            @endcan
         </ul>
 
         <ul class="navbar-nav ml-auto">

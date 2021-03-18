@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\FileDataTable;
-use App\Http\Requests;
-use Illuminate\Http\Request;
 use App\Http\Requests\CreateFileRequest;
 use App\Http\Requests\UpdateFileRequest;
 use App\Repositories\FileRepository;
-use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\Request;
+use Flash;
 use Response;
-use Datatables;
+
+use DataTables;
+use App\Models\File;
 
 class FileController extends AppBaseController
 {
@@ -27,14 +27,30 @@ class FileController extends AppBaseController
      * Display a listing of the File.
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return Datatables::of((new FileDataTable())->get())->make(true);
+            $data = File::all();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                        $action_btn = '<td><div class="btn-group">
+                            <a href="'.route('files.destroy', $row['id']).'" class="btn btn-outline-danger btn-xs">
+                                <i class="fas fa-trash"></i>
+                            </a></div></td>';
+                        return $action_btn;
+                })
+                ->addColumn('fileSize', function($row) {
+                    $project_value = number_format($row['file_size']);
+                    return $project_value;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
-    
+
         return view('files.index');
     }
 
@@ -57,8 +73,15 @@ class FileController extends AppBaseController
      */
     public function store(CreateFileRequest $request)
     {
-        $input = $request->all();
-
+        $data = $request->file('file');
+        $input = [
+            'file_name' => $data->getClientOriginalName(),
+            'hash_name' => $data->hashName(),
+            'location' => $data->store('public'),
+            'file_size' => $data->getSize(),
+            'extension' => $data->getClientOriginalExtension(),
+        ];
+        
         $file = $this->fileRepository->create($input);
 
         Flash::success('File saved successfully.');
@@ -69,7 +92,7 @@ class FileController extends AppBaseController
     /**
      * Display the specified File.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -89,7 +112,7 @@ class FileController extends AppBaseController
     /**
      * Show the form for editing the specified File.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -109,7 +132,7 @@ class FileController extends AppBaseController
     /**
      * Update the specified File in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateFileRequest $request
      *
      * @return Response
@@ -134,7 +157,9 @@ class FileController extends AppBaseController
     /**
      * Remove the specified File from storage.
      *
-     * @param  int $id
+     * @param int $id
+     *
+     * @throws \Exception
      *
      * @return Response
      */
@@ -142,8 +167,16 @@ class FileController extends AppBaseController
     {
         $file = $this->fileRepository->find($id);
 
-        $file->delete();
+        if (empty($file)) {
+            Flash::error('File not found');
 
-        return $this->sendSuccess('File deleted successfully.');
+            return redirect(route('files.index'));
+        }
+
+        $this->fileRepository->delete($id);
+
+        Flash::success('File deleted successfully.');
+
+        return redirect(route('files.index'));
     }
 }

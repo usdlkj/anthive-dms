@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class File
  * @package App\Models
- * @version March 11, 2021, 12:59 pm UTC
+ * @version March 18, 2021, 10:04 am UTC
  *
  * @property \Illuminate\Database\Eloquent\Collection $documents
  * @property string $file_name
@@ -36,7 +36,7 @@ class File extends Model
 
     public $fillable = [
         'file_name',
-        'file_hash',
+        'hash_name',
         'location',
         'file_size',
         'extension'
@@ -50,7 +50,7 @@ class File extends Model
     protected $casts = [
         'id' => 'integer',
         'file_name' => 'string',
-        'file_hash' => 'string',
+        'hash_name' => 'string',
         'location' => 'string',
         'file_size' => 'string',
         'extension' => 'string'
@@ -62,11 +62,6 @@ class File extends Model
      * @var array
      */
     public static $rules = [
-        'file_name' => 'required|string|max:255',
-        'file_hash' => 'required|string|max:255',
-        'location' => 'required|string|max:255',
-        'file_size' => 'required|string|max:255',
-        'extension' => 'required|string|max:255',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'
