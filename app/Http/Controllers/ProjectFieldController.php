@@ -104,7 +104,7 @@ class ProjectFieldController extends AppBaseController
 
         Flash::success('Project Field saved successfully.');
 
-        return redirect('/projects/'.$projectId.'/fields');
+        return redirect(route('projects.fields.index', [$projectId]));
     }
 
     /**
@@ -142,7 +142,7 @@ class ProjectFieldController extends AppBaseController
         if (empty($projectField)) {
             Flash::error('Project Field not found');
 
-            return redirect(route('projectFields.index'));
+            return redirect(route('projects.fields.index', [$projectId]));
         }
 
         return view('project_fields.edit')
@@ -166,14 +166,14 @@ class ProjectFieldController extends AppBaseController
         if (empty($projectField)) {
             Flash::error('Project Field not found');
 
-            return redirect(route('projectFields.index'));
+            return redirect(route('projects.fields.index', [$projectId]));
         }
 
         $projectField = $this->projectFieldRepository->update($request->all(), $id);
 
         Flash::success('Project Field updated successfully.');
 
-        return redirect('/projects/'.$projectId.'/fields');
+        return redirect(route('projects.fields.index', [$projectId]));
     }
 
     /**
@@ -185,20 +185,20 @@ class ProjectFieldController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($projectId, $id)
     {
         $projectField = $this->projectFieldRepository->find($id);
 
         if (empty($projectField)) {
             Flash::error('Project Field not found');
 
-            return redirect(route('projectFields.index'));
+            return redirect(route('projects.fields.index', [$projectId]));
         }
 
         $this->projectFieldRepository->delete($id);
 
         Flash::success('Project Field deleted successfully.');
 
-        return redirect(route('projectFields.index'));
+        return redirect(route('projects.fields.index', [$projectId]));
     }
 }

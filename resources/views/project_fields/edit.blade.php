@@ -29,6 +29,7 @@
                     <a href="/projects/{{$projectId}}/fields" class="btn btn-default">Cancel</a>&nbsp;
                     {!! Form::model($projectField, ['route' => ['projects.fields.destroy', $projectField->project_id, $projectField->id], 'method' => 'delete']) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-outline-danger']) !!}
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
