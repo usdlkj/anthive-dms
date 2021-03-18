@@ -34,6 +34,7 @@ class SelectValueController extends AppBaseController
     {
         if ($request->ajax()) {
             $data = DB::table('select_values')
+                        ->whereNull('select_values.deleted_at')
                         ->join('project_fields', 'select_values.project_field_id', '=', 'project_fields.id')
                         ->select('select_values.*', 'project_fields.project_id', 'project_fields.field_text')
                         ->get();
@@ -104,7 +105,7 @@ class SelectValueController extends AppBaseController
         if (empty($selectValue)) {
             Flash::error('Select Value not found');
 
-            return redirect(route('selectValues.index'));
+            return redirect(route('projects.fields.selects.index', [$projectId, $fieldId]));
         }
 
         return view('select_values.show')
@@ -127,7 +128,7 @@ class SelectValueController extends AppBaseController
         if (empty($selectValue)) {
             Flash::error('Select Value not found');
 
-            return redirect(route('selectValues.index'));
+            return redirect(route('projects.fields.selects.index', [$projectId, $fieldId]));
         }
 
         return view('select_values.edit')
@@ -151,7 +152,7 @@ class SelectValueController extends AppBaseController
         if (empty($selectValue)) {
             Flash::error('Select Value not found');
 
-            return redirect(route('selectValues.index'));
+            return redirect(route('projects.fields.selects.index', [$projectId, $fieldId]));
         }
 
         $selectValue = $this->selectValueRepository->update($request->all(), $id);
@@ -170,20 +171,20 @@ class SelectValueController extends AppBaseController
      *
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($projectId, $fieldId, $id)
     {
         $selectValue = $this->selectValueRepository->find($id);
 
         if (empty($selectValue)) {
             Flash::error('Select Value not found');
 
-            return redirect(route('selectValues.index'));
+            return redirect(route('projects.fields.selects.index', [$projectId, $fieldId]));
         }
 
         $this->selectValueRepository->delete($id);
 
         Flash::success('Select Value deleted successfully.');
 
-        return redirect(route('selectValues.index'));
+        return redirect(route('projects.fields.selects.index', [$projectId, $fieldId]));
     }
 }
