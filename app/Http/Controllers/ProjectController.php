@@ -37,6 +37,7 @@ class ProjectController extends AppBaseController
     {
         if ($request->ajax()) {
             $data = DB::table('projects')
+                        ->whereNull('projects.deleted_at')
                         ->join('companies', 'projects.project_owner_id', '=', 'companies.id')
                         ->select('projects.*', 'companies.company_name')
                         ->get();
