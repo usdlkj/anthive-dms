@@ -3,9 +3,7 @@
         <thead>
             <tr>
                 <th>File Name</th>
-                <th>Hash Name</th>
-                <th>Location</th>
-                <th>File Size</th>
+                <th>File Size (MB)</th>
                 <th>Extension</th>
                 <th>Action</th>
             </tr>

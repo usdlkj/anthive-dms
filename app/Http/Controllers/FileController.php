@@ -38,13 +38,20 @@ class FileController extends AppBaseController
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                         $action_btn = '<td><div class="btn-group">
-                            <a href="'.route('files.destroy', $row['id']).'" class="btn btn-outline-danger btn-xs">
+                            <a href="'.\Illuminate\Support\Facades\Storage::url($row['location']).'" class="btn btn-outline-primary btn-xs">
+                                <i class="fas fa-arrow-down"></i>
+                            </a>
+                            <form action="/files/'.$row['id'].'" method="POST">
+                            <input name="_method" type="hidden" value="DELETE">
+                            <input name="_token" type="hidden" value="'.csrf_token().'">
+                            <button type="submit" class="btn btn-outline-danger btn-xs">
                                 <i class="fas fa-trash"></i>
-                            </a></div></td>';
+                            </button>
+                            </form></div></td>';
                         return $action_btn;
                 })
                 ->addColumn('fileSize', function($row) {
-                    $project_value = number_format($row['file_size']);
+                    $project_value = number_format(intval($row['file_size'])/1024^2);
                     return $project_value;
                 })
                 ->rawColumns(['action'])

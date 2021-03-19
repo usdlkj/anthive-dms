@@ -51,14 +51,6 @@ $(document).ready(function() {
                 name: 'file_name'
             },
             {
-                data: 'hash_name',
-                name: 'hash_name'
-            },
-            {
-                data: 'location',
-                name: 'location'
-            },
-            {
                 data: 'fileSize',
                 name: 'fileSize'
             },
