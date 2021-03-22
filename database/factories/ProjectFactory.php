@@ -23,18 +23,17 @@ class ProjectFactory extends Factory
     {
         return [
             'project_name' => $this->faker->word,
-        'project_code' => $this->faker->word,
-        'description' => $this->faker->word,
-        'location' => $this->faker->word,
-        'city' => $this->faker->word,
-        'country' => $this->faker->word,
-        'start_date' => $this->faker->word,
-        'end_date' => $this->faker->word,
-        'project_value' => $this->faker->randomDigitNotNull,
-        'project_owner_id' => $this->faker->word,
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'updated_at' => $this->faker->date('Y-m-d H:i:s'),
-        'deleted_at' => $this->faker->date('Y-m-d H:i:s')
+            'project_code' => $this->faker->word,
+            'description' => $this->faker->word,
+            'location' => $this->faker->word,
+            'city' => $this->faker->word,
+            'country' => $this->faker->word,
+            'start_date' => $this->faker->word,
+            'end_date' => $this->faker->word,
+            'project_value' => $this->faker->randomDigitNotNull,
+            'project_owner_id' => $this->faker->word,
+            'created_at' => $this->faker->date('Y-m-d H:i:s'),
+            'updated_at' => $this->faker->date('Y-m-d H:i:s'),
         ];
     }
 }

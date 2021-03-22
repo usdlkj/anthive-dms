@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Document
  * @package App\Models
- * @version March 11, 2021, 1:18 pm UTC
+ * @version March 19, 2021, 6:20 am UTC
  *
  * @property \App\Models\File $file
  * @property \App\Models\Project $project
@@ -65,11 +65,6 @@ class Document extends Model
      * @var array
      */
     public static $rules = [
-        'document_code' => 'required|string|max:255',
-        'project_id' => 'nullable',
-        'file_id' => 'nullable',
-        'version' => 'required|boolean',
-        'latest_version' => 'required|boolean',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable'

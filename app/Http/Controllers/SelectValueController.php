@@ -35,6 +35,7 @@ class SelectValueController extends AppBaseController
         if ($request->ajax()) {
             $data = DB::table('select_values')
                         ->whereNull('select_values.deleted_at')
+                        ->where('select_values.project_field_id', '=', $fieldId)
                         ->join('project_fields', 'select_values.project_field_id', '=', 'project_fields.id')
                         ->select('select_values.*', 'project_fields.project_id', 'project_fields.field_text')
                         ->get();

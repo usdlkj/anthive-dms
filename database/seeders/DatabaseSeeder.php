@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Company;
 use App\Models\User;
-
+use App\Models\Project;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -20,10 +20,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
         ]);
 
-        Company::factory()
-                    ->count(17)
-                    ->has(User::factory()->count(3))
-                    ->create();
-        // \App\Models\User::factory(25)->create();
+        // Company::factory()
+        //             ->count(17)
+        //             ->has(User::factory()->count(3))
+        //             ->create();
     }
 }

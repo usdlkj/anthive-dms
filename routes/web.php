@@ -35,7 +35,7 @@ Route::resource('projects.users', App\Http\Controllers\ProjectUserController::cl
 
 Route::resource('files', App\Http\Controllers\FileController::class);
 
-Route::resource('documents', App\Http\Controllers\DocumentController::class);
+Route::resource('projects.documents', App\Http\Controllers\DocumentController::class);
 
 Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
 

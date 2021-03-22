@@ -12,6 +12,7 @@ use Response;
 
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\ProjectField;
 use Illuminate\Support\Facades\Auth;
 use DataTables;
 use DB;
@@ -94,15 +95,77 @@ class ProjectController extends AppBaseController
      */
     public function store(CreateProjectRequest $request)
     {
+        // get project's detail
         $input = $request->all();
+
+        // add project owner
         $input['project_owner_id'] = $input['project_owner'];
 
+        // store project and get its object
         $project = $this->projectRepository->create($input);
 
+        // add current user to the project
         $projectUser = new ProjectUser;
         $projectUser->user_id = Auth::user()->id;
         $projectUser->project_id = $project->id;
         $projectUser->save();
+
+        // add document number field
+        $docNum = new ProjectField;
+        $docNum->project_id = $project->id;
+        $docNum->field_code = 'docnum';
+        $docNum->field_type = ProjectField::FIELD_TEXT;
+        $docNum->field_text = 'Document Number';
+        $docNum->visible = true;
+        $docNum->mandatory = true;
+        $docNum->sequence = 1;
+        $docNum->save();
+
+        // add document type field
+        $docType = new ProjectField;
+        $docType->project_id = $project->id;
+        $docType->field_code = 'doctype';
+        $docType->field_type = ProjectField::FIELD_SINGLE_SELECT;
+        $docType->field_text = 'Type';
+        $docType->visible = true;
+        $docType->mandatory = true;
+        $docType->sequence = 2;
+        $docType->save();
+
+        // add document status field
+        $docStatus = new ProjectField;
+        $docStatus->project_id = $project->id;
+        $docStatus->field_code = 'docstatus';
+        $docStatus->field_type = ProjectField::FIELD_SINGLE_SELECT;
+        $docStatus->field_text = 'Status';
+        $docStatus->visible = true;
+        $docStatus->mandatory = true;
+        $docStatus->sequence = 3;
+        $docStatus->save();
+
+        // add revision number field
+        $revision = new ProjectField;
+        $revision->project_id = $project->id;
+        $revision->field_code = 'revision';
+        $revision->field_type = ProjectField::FIELD_SHORT_TEXT;
+        $revision->field_text = 'Revision';
+        $revision->visible = true;
+        $revision->mandatory = true;
+        $revision->sequence = 4;
+        $revision->save();
+
+        // add revision date field
+        $revDate = new ProjectField;
+        $revDate->project_id = $project->id;
+        $revDate->field_code = 'revdate';
+        $revDate->field_type = ProjectField::FIELD_DATE;
+        $revDate->field_text = 'Rev Date';
+        $revDate->visible = true;
+        $revDate->mandatory = true;
+        $revDate->sequence = 5;
+        $revDate->save();
+
+        // add file field
 
         Flash::success('Project saved successfully.');
 

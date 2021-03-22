@@ -1,43 +1,34 @@
-<!-- Document Code Field -->
+@foreach ($projectFields as $field)
+
 <div class="form-group col-sm-6">
-    {!! Form::label('document_code', 'Document Code:') !!}
-    {!! Form::text('document_code', null, ['class' => 'form-control','maxlength' => 255,'maxlength' => 255]) !!}
-</div>
+    <label for="field">{{$field->field_text}}</label>
+@if ($field->field_type == \App\Models\ProjectField::FIELD_SHORT_TEXT)
+    <input type="text" name="{{$field->field_code}}" class="form-control">
+@elseif ($field->field_type == \App\Models\ProjectField::FIELD_TEXT)
+    <input type="text" name="{{$field->field_code}}" class="form-control">
+@elseif ($field->field_type == \App\Models\ProjectField::FIELD_TEXT_AREA)
+    <textarea name="{{$field->field_code}}"></textarea>
+@elseif ($field->field_type == \App\Models\ProjectField::FIELD_DATE)
+    <input type="date" name="{{$field->field_code}}" class="form-control">
+@elseif ($field->field_type == \App\Models\ProjectField::FIELD_SINGLE_SELECT)
+    <select name="{{$field->field_code}}" class="form-control">
+    @foreach ($selectValues as $selectValue)
+    @if ($field->id == $selectValue->project_field_id)
+        <option value="{{$selectValue->id}}">{{$selectValue->value_text}}</option>
+    @endif
+    @endforeach
+    </select>
+@elseif ($field->field_type == \App\Models\ProjectField::FIELD_MULTI_SELECT)
+    <select name="{{$field->field_code}}" class="form-control">
+    @foreach ($selectValues as $selectValue)
+    @if ($field->id == $selectValue->project_field_id)
+        <option value="{{$selectValue->id}}">{{$selectValue->value_text}}</option>
+    @endif
+    @endforeach
+    </select>
+@endif
 
-<!-- Project Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('project_id', 'Project Id:') !!}
-    {!! Form::number('project_id', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- File Id Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('file_id', 'File Id:') !!}
-    {!! Form::number('file_id', null, ['class' => 'form-control']) !!}
-</div>
-
-<!-- Version Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('version', 'Version:') !!}
-    <label class="checkbox-inline">
-        {!! Form::hidden('version', 0) !!}
-        {!! Form::checkbox('version', '1', null) !!}
-    </label>
-</div>
-
-
-<!-- Latest Version Field -->
-<div class="form-group col-sm-6">
-    {!! Form::label('latest_version', 'Latest Version:') !!}
-    <label class="checkbox-inline">
-        {!! Form::hidden('latest_version', 0) !!}
-        {!! Form::checkbox('latest_version', '1', null) !!}
-    </label>
 </div>
 
 
-<!-- Submit Field -->
-<div class="form-group col-sm-12">
-    {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-    <a href="{{ route('documents.index') }}" class="btn btn-light">Cancel</a>
-</div>
+@endforeach

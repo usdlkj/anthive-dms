@@ -1,33 +1,73 @@
 @extends('layouts.app')
-@section('title')
-    Documents 
-@endsection
-@section('css')
-    <link href="{{ asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
-@endsection
+
 @section('content')
-    <section class="section">
-        <div class="section-header">
-            <h1>Documents</h1>
-            <div class="section-header-breadcrumb">
-                <a href="{{ route('documents.create')}}" class="btn btn-primary form-btn">Document <i class="fas fa-plus"></i></a>
-            </div>
-        </div>
-        <div class="section-body">
-            <div class="card">
-                <div class="card-body">
-                    @include('documents.table')
-                    @include('documents.templates.templates')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Documents</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-primary float-right"
+                       href="{{ route('projects.documents.create', $projectId) }}">
+                        Add New
+                    </a>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="content px-3">
+
+        @include('flash::message')
+
+        <div class="clearfix"></div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                @include('documents.table')
+
+                <div class="card-footer clearfix float-right">
+                    <div class="float-right">
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 @endsection
-@section('scripts')
-    <script>
-        let recordsURL = "{{ route('documents.index') }}/";
-    </script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>
-    <script src="{{mix('assets/js/documents/documents.js')}}"></script>
-@endsection
+
+@push('scripts')
+<script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#documents-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('projects.documents.index', $projectId) }}",
+        columns: [{
+                data: 'docnum',
+                name: 'docnum'
+            },
+            {
+                data: 'doctype',
+                name: 'doctype'
+            },
+            {
+                data: 'revision',
+                name: 'revision'
+            },
+            {
+                data: 'revdate',
+                name: 'revdate'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            }
+        ]
+    });
+});
+</script>
+@endpush
