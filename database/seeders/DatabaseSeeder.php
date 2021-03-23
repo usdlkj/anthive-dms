@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CompanySeeder::class,
             UserSeeder::class,
+            ProjectSeeder::class
         ]);
 
         // Company::factory()

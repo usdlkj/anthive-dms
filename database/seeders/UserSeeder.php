@@ -28,7 +28,6 @@ class UserSeeder extends Seeder
             'phone_number' => '021 25561616',
             'position' => 'Super Admin',
             'role' => User::ROLE_SUPER_ADMIN,
-            'company_id' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
