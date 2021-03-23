@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\ProjectField;
 
 class ProjectSeeder extends Seeder
 {
@@ -35,5 +36,28 @@ class ProjectSeeder extends Seeder
         $user['created_at'] = now();
         $user['updated_at'] = now();
         $user->save();
+
+        $this->createField($project->id, 'docnum', ProjectField::FIELD_TEXT, 'Document Number', true, true, 1);
+        $this->createField($project->id, 'doctype', ProjectField::FIELD_SINGLE_SELECT, 'Document Type', true, true, 2);
+        $this->createField($project->id, 'revision', ProjectField::FIELD_SHORT_TEXT, 'Revision', true, true, 3);
+        $this->createField($project->id, 'revdate', ProjectField::FIELD_DATE, 'Revision Date', true, true, 4);
+        $this->createField($project->id, 'docstatus', ProjectField::FIELD_SINGLE_SELECT, 'Document Status', true, true, 5);
+        $this->createField($project->id, 'descr', ProjectField::FIELD_TEXT_AREA, 'Description', true, false, 7);
+        $this->createField($project->id, 'disc', ProjectField::FIELD_MULTI_SELECT, 'Discipline', true, false, 7);
+    }
+
+    protected function createField($projectId, $fieldCode, $fieldType, $fieldText, $visible, $mandatory, $sequence)
+    {
+        $field = new ProjectField;
+        $field['project_id'] = $projectId;
+        $field['field_code'] = $fieldCode;
+        $field['field_type'] = $fieldType;
+        $field['field_text'] = $fieldText;
+        $field['visible'] = $visible;
+        $field['mandatory'] = $mandatory;
+        $field['sequence'] = $sequence;
+        $field['created_at'] = now();
+        $field['updated_at'] = now();
+        $field->save();
     }
 }
