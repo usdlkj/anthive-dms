@@ -7,7 +7,7 @@
 @elseif ($field->field_type == \App\Models\ProjectField::FIELD_TEXT)
     <input type="text" name="{{$field->field_code}}" class="form-control">
 @elseif ($field->field_type == \App\Models\ProjectField::FIELD_TEXT_AREA)
-    <textarea name="{{$field->field_code}}"></textarea>
+    <textarea name="{{$field->field_code}}" class="form-control"></textarea>
 @elseif ($field->field_type == \App\Models\ProjectField::FIELD_DATE)
     <input type="date" name="{{$field->field_code}}" class="form-control">
 @elseif ($field->field_type == \App\Models\ProjectField::FIELD_SINGLE_SELECT)
@@ -32,3 +32,8 @@
 
 
 @endforeach
+
+<div class="form-group col-sm-6">
+    <label for="file">File</label>
+    <input type="file" name="file" class="form-control">
+</div>

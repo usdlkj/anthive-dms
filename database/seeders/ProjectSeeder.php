@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\ProjectField;
+use App\Models\SelectValue;
 
 class ProjectSeeder extends Seeder
 {
@@ -38,12 +39,22 @@ class ProjectSeeder extends Seeder
         $user->save();
 
         $this->createField($project->id, 'docnum', ProjectField::FIELD_TEXT, 'Document Number', true, true, 1);
-        $this->createField($project->id, 'doctype', ProjectField::FIELD_SINGLE_SELECT, 'Document Type', true, true, 2);
         $this->createField($project->id, 'revision', ProjectField::FIELD_SHORT_TEXT, 'Revision', true, true, 3);
         $this->createField($project->id, 'revdate', ProjectField::FIELD_DATE, 'Revision Date', true, true, 4);
-        $this->createField($project->id, 'docstatus', ProjectField::FIELD_SINGLE_SELECT, 'Document Status', true, true, 5);
-        $this->createField($project->id, 'descr', ProjectField::FIELD_TEXT_AREA, 'Description', true, false, 7);
-        $this->createField($project->id, 'disc', ProjectField::FIELD_MULTI_SELECT, 'Discipline', true, false, 7);
+        $this->createField($project->id, 'descr', ProjectField::FIELD_TEXT_AREA, 'Description', true, false, 6);
+        
+
+        $field = $this->createField($project->id, 'doctype', ProjectField::FIELD_SINGLE_SELECT, 'Document Type', true, true, 2);
+        $this->addValue($field->id, 'DWG', 'Drawing');
+        $this->addValue($field->id, 'MOM', 'Minutes of Meeting');
+
+        $field = $this->createField($project->id, 'docstatus', ProjectField::FIELD_SINGLE_SELECT, 'Document Status', true, true, 5);
+        $this->addValue($field->id, 'DRF', 'Draft');
+        $this->addValue($field->id, 'APP', 'Approved');
+
+        $field = $this->createField($project->id, 'disc', ProjectField::FIELD_MULTI_SELECT, 'Discipline', true, false, 7);
+        $this->addValue($field->id, 'ARC', 'Architectural');
+        $this->addValue($field->id, 'STR', 'Structural');
     }
 
     protected function createField($projectId, $fieldCode, $fieldType, $fieldText, $visible, $mandatory, $sequence)
@@ -59,5 +70,20 @@ class ProjectSeeder extends Seeder
         $field['created_at'] = now();
         $field['updated_at'] = now();
         $field->save();
+
+        return $field;
+    }
+
+    protected function addValue($fieldId, $valueCode, $valueText)
+    {
+        $value = new SelectValue;
+        $value['project_field_id'] = $fieldId;
+        $value['value_code'] = $valueCode;
+        $value['value_text'] = $valueText;
+        $value['created_at'] = now();
+        $value['updated_at'] = now();
+        $value->save();
+
+        return $value;
     }
 }

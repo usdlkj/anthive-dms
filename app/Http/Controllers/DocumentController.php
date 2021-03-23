@@ -14,6 +14,7 @@ use App\Models\Project;
 use App\Models\ProjectField;
 use App\Models\Document;
 use App\Models\DocumentField;
+use App\Models\File;
 use DB;
 use DataTables;
 
@@ -133,52 +134,89 @@ class DocumentController extends AppBaseController
      */
     public function store($projectId, CreateDocumentRequest $request)
     {
-        $input = $request->all();
+        try {
+            $input = $request->all();
 
-        // get previous document versions
-        $previousDocs = DB::table('documents')
-                            ->where('project_id', $projectId)
-                            ->where('document_code', $input['docnum'])
-                            ->orderBy('version', 'DESC')
-                            ->get();
+            // begin transaction
+            DB::beginTransaction();
 
-        // create current document's object
-        $currentDoc =  [
-            'document_code' => $input['docnum'],
-            'project_id' => $projectId,
-            'file_id' => null,
-            'version' => 1,
-            'latest_version' => true,
-            'created_date' => now(),
-            'updated_date' => now()
-        ];
+            // get previous document versions
+            $previousDocs = DB::table('documents')
+                                ->where('project_id', $projectId)
+                                ->where('document_code', $input['docnum'])
+                                ->orderBy('version', 'DESC')
+                                ->get();
 
-        // set version to latest if there are previous versions
-        if (count($previousDocs) > 0) {
-            $currentDoc['version'] = intval($previousDocs[0]->version) + 1;
-        }
+            // create current document's object
+            $currentDoc =  [
+                'document_code' => $input['docnum'],
+                'project_id' => $projectId,
+                'file_id' => null,
+                'version' => 1,
+                'latest_version' => true,
+                'created_date' => now(),
+                'updated_date' => now()
+            ];
 
-        // save current document
-        $document = $this->documentRepository->create($currentDoc);
+            // if there are previous versions
+            if (count($previousDocs) > 0) {
+                // set version to latest 
+                $currentDoc['version'] = intval($previousDocs[0]->version) + 1;
 
-        // foreach field
-        foreach($input as $key => $value) {
-
-            // do not save '_token'
-            if ($key != '_token') {
-                DocumentField::create([
-                    'document_id' => $document->id,
-                    'field_code' => $key,
-                    'field_value' => $value,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ]);
+                // set previous doc's latest_version to false
+                $previousDocs[0]->latest_version = false;
+                $previousDocs[0]->save();
             }
+
+            // upload file if exists
+            if (isset($input['file'])) {
+                $data = $request->file('file');
+
+                $file = new File;
+                $file['file_name'] = $data->getClientOriginalName();
+                $file['hash_name'] = $data->hashName();
+                $file['location'] = $data->store('public');
+                $file['file_size'] = $data->getSize();
+                $file['extension'] = $data->getClientOriginalExtension();
+                $file->save();
+
+                $currentDoc['file_id'] = $file->id;
+            }
+
+            // save current document
+            $document = $this->documentRepository->create($currentDoc);
+
+            // foreach field
+            foreach($input as $key => $value) {
+
+                // do not save '_token' and value is not empty
+                if ($key != '_token' && $value != '') {
+                    DocumentField::create([
+                        'document_id' => $document->id,
+                        'field_code' => $key,
+                        'field_value' => $value,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+            }
+
+            // commit transaction
+            DB::commit();
+
+            Flash::success('Document saved successfully.');
+
+            return redirect(route('projects.documents.index', $projectId));
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollBack();
+
+            Flash::error('Unable to save document.');
+
+            return redirect(route('projects.documents.index', $projectId));
         }
-
-        Flash::success('Document saved successfully.');
-
-        return redirect(route('projects.documents.index', $projectId));
     }
 
     /**
