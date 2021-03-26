@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default float-right"
-                       href="{{ route('documents.index') }}">
+                       href="{{ route('projects.documents.index', [$document->project_id]) }}">
                         Back
                     </a>
                 </div>

@@ -236,7 +236,23 @@ class DocumentController extends AppBaseController
             return redirect(route('documents.index'));
         }
 
-        return view('documents.show')->with('document', $document);
+        $projectFields = ProjectField::where('project_id', $document->project_id)
+                                        ->orderBy('sequence')
+                                        ->get();
+
+        $documentFields = DocumentField::where('document_id', $document->id)->get();
+
+        $selectValues = DB::table('select_values')
+                            ->where('project_id', $document->project_id)
+                            ->join('project_fields', 'select_values.project_field_id', '=', 'project_fields.id')
+                            ->select('select_values.*', 'project_fields.project_id')
+                            ->get();
+
+        return view('documents.show')
+            ->with('document', $document)
+            ->with('projectFields', $projectFields)
+            ->with('documentFields', $documentFields)
+            ->with('selectValues', $selectValues);
     }
 
     /**
