@@ -17,7 +17,7 @@
 
         <div class="card">
 
-            {!! Form::model($document, ['route' => ['documents.update', $document->id], 'method' => 'patch']) !!}
+            {!! Form::model($document, ['route' => ['projects.documents.update', $document->project_id, $document->id], 'method' => 'patch']) !!}
 
             <div class="card-body">
                 <div class="row">
@@ -27,7 +27,7 @@
 
             <div class="card-footer">
                 {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('documents.index') }}" class="btn btn-default">Cancel</a>
+                <a href="{{ route('projects.documents.index', $document->project_id) }}" class="btn btn-default">Cancel</a>
             </div>
 
            {!! Form::close() !!}

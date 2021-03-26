@@ -233,7 +233,7 @@ class DocumentController extends AppBaseController
         if (empty($document)) {
             Flash::error('Document not found');
 
-            return redirect(route('documents.index'));
+            return redirect(route('projects.documents.index', $document->project_id));
         }
 
         $projectFields = ProjectField::where('project_id', $document->project_id)
@@ -269,10 +269,26 @@ class DocumentController extends AppBaseController
         if (empty($document)) {
             Flash::error('Document not found');
 
-            return redirect(route('documents.index'));
+            return redirect(route('projects.documents.index', $document->project_id));
         }
 
-        return view('documents.edit')->with('document', $document);
+        $projectFields = ProjectField::where('project_id', $document->project_id)
+                                        ->orderBy('sequence')
+                                        ->get();
+
+        $documentFields = DocumentField::where('document_id', $document->id)->get();
+
+        $selectValues = DB::table('select_values')
+                            ->where('project_id', $document->project_id)
+                            ->join('project_fields', 'select_values.project_field_id', '=', 'project_fields.id')
+                            ->select('select_values.*', 'project_fields.project_id')
+                            ->get();
+
+        return view('documents.edit')
+            ->with('document', $document)
+            ->with('projectFields', $projectFields)
+            ->with('documentFields', $documentFields)
+            ->with('selectValues', $selectValues);
     }
 
     /**
