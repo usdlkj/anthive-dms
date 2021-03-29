@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1>Edit Document</h1>
+                    <h1>Supersede Document</h1>
                 </div>
             </div>
         </div>
@@ -17,7 +17,7 @@
 
         <div class="card">
 
-            {!! Form::model($document, ['route' => ['projects.documents.update', $document->project_id, $document->id], 'method' => 'patch']) !!}
+            {!! Form::model($document, ['route' => ['projects.documents.update', $document->project_id, $document->id], 'method' => 'patch', 'files' => 'true']) !!}
 
             <div class="card-body">
                 <div class="row">

@@ -64,10 +64,6 @@ foreach ($documentFields as $docField) {
 
     </select>
 
-@else
-
-    <input type="text" class="form-control" disabled>
-
 @endif
 
 </div>
