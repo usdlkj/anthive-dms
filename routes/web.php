@@ -35,6 +35,8 @@ Route::resource('projects.users', App\Http\Controllers\ProjectUserController::cl
 
 Route::resource('files', App\Http\Controllers\FileController::class);
 
+Route::get('/projects/{projectId}/documents/showAll', [App\Http\Controllers\DocumentController::class, 'showAll'])
+        ->name('projects.documents.showAll');
 Route::resource('projects.documents', App\Http\Controllers\DocumentController::class);
 
 Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);

@@ -29,8 +29,9 @@ class DocumentController extends AppBaseController
     }
 
     /**
-     * Display a listing of the Document.
+     * Display a listing of current Documents.
      *
+     * @param int $projectId
      * @param Request $request
      *
      * @return Response
@@ -38,69 +39,107 @@ class DocumentController extends AppBaseController
     public function index($projectId, Request $request)
     {
         if ($request->ajax()) {
-            
-            // get all active documents for the project
+            return $this->getDocuments($projectId, $request, false);
+        }
+
+        return view('documents.index')->with('projectId', $projectId);
+    }
+
+    /**
+     * Display a listing of all Documents.
+     * 
+     * @param int $projectId
+     * @param Request $request
+     * 
+     * @return Response
+     */
+    public function showAll($projectId, Request $request)
+    {
+        return $this->getDocuments($projectId, $request, true);
+    }
+
+    /**
+     * Display a listing of the Document.
+     * Show All or Show Active
+     * 
+     * @param int $projectId
+     * @param Request $request
+     * @param bool $showAll
+     * 
+     * @return Response
+     */
+    protected function getDocuments($projectId, Request $request, $showAll)
+    {
+        $documents = [];
+
+        if ($showAll) {
+            // get all documents
+            $documents = DB::table('documents')
+                                ->where('project_id', $projectId)
+                                ->get();
+            $documents = json_decode(json_encode($documents), true);
+        }
+        else {
+            // get active documents
             $documents = DB::table('documents')
                                 ->where('project_id', $projectId)
                                 ->where('latest_version', true)
                                 ->get();
             $documents = json_decode(json_encode($documents), true);
-
-            $data = [];
-
-            // for each document
-            foreach ($documents as $document) {
-
-                // get its fields
-                $fields = DB:: table('document_fields')
-                                ->where('document_id', $document['id'])
-                                ->get();
-
-                // for each of the documents' fields
-                foreach ($fields as $field) {
-
-                    // if field is doctype
-                    if ($field->field_code == 'doctype') {
-                        
-                        // get the doctype's select value
-                        $selectValue = DB::table('select_values')->find($field->field_value);
-
-                        // assign the value to the array
-                        $temp = array(
-                            $field->field_code => $selectValue->value_text
-                        );
-                        $document = array_merge($document, $temp);
-                    }
-                    else {
-
-                        // assign the field's value to the array
-                        $temp = array(
-                            $field->field_code => $field->field_value
-                        );
-                        $document = array_merge($document, $temp);
-                    }
-                }
-
-                array_push($data, $document);
-            }
-
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row) {
-                        $action_btn = '<td><div class="btn-group">
-                            <a href="'.route('projects.documents.show', [$row['project_id'], $row['id']]).'" class="btn btn-outline-secondary btn-xs">
-                                <i class="far fa-eye"></i>
-                            </a>
-                            <a href="'.route('projects.documents.edit', [$row['project_id'], $row['id']]).'" class="btn btn-outline-warning btn-xs">
-                                <i class="far fa-edit"></i>
-                            </div></td>';
-                        return $action_btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
         }
 
-        return view('documents.index')->with('projectId', $projectId);
+        $data = [];
+
+        // for each document
+        foreach ($documents as $document) {
+
+            // get its fields
+            $fields = DB:: table('document_fields')
+                            ->where('document_id', $document['id'])
+                            ->get();
+
+            // for each of the documents' fields
+            foreach ($fields as $field) {
+
+                // if field is doctype
+                if ($field->field_code == 'doctype') {
+                    
+                    // get the doctype's select value
+                    $selectValue = DB::table('select_values')->find($field->field_value);
+
+                    // assign the value to the array
+                    $temp = array(
+                        $field->field_code => $selectValue->value_text
+                    );
+                    $document = array_merge($document, $temp);
+                }
+                else {
+
+                    // assign the field's value to the array
+                    $temp = array(
+                        $field->field_code => $field->field_value
+                    );
+                    $document = array_merge($document, $temp);
+                }
+            }
+
+            array_push($data, $document);
+        }
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row) {
+                    $action_btn = '<td><div class="btn-group">
+                        <a href="'.route('projects.documents.show', [$row['project_id'], $row['id']]).'" class="btn btn-outline-secondary btn-xs">
+                            <i class="far fa-eye"></i>
+                        </a>
+                        <a href="'.route('projects.documents.edit', [$row['project_id'], $row['id']]).'" class="btn btn-outline-warning btn-xs">
+                            <i class="far fa-edit"></i>
+                        </div></td>';
+                    return $action_btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -145,14 +184,14 @@ class DocumentController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show($projectId, $id)
     {
         $document = $this->documentRepository->find($id);
 
         if (empty($document)) {
             Flash::error('Document not found');
 
-            return redirect(route('projects.documents.index', $document->project_id));
+            return redirect(route('projects.documents.index', $projectId));
         }
 
         $projectFields = ProjectField::where('project_id', $document->project_id)
