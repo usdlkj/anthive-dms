@@ -47,11 +47,14 @@ class ProjectController extends AppBaseController
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                     $action_btn = '<td><div class="btn-group">
-                        <a href="/projects/'.$row['id'].'/users" class="btn btn-outline-primary btn-xs">
+                        <a href="'.route('projects.users.index', [$row['id']]).'" class="btn btn-outline-primary btn-xs">
                             <i class="fas fa-user"></i>
                         </a>
-                        <a href="/projects/'.$row['id'].'/fields" class="btn btn-outline-primary btn-xs">
+                        <a href="'.route('projects.fields.index', [$row['id']]).'" class="btn btn-outline-primary btn-xs">
                             <i class="fas fa-table"></i>
+                        </a>
+                        <a href="'.route('projects.mailTypes.index', [$row['id']]).'" class="btn btn-outline-primary btn-xs">
+                            <i class="fas fa-envelope"></i>
                         </a>
                         <a href="'.route('projects.show', $row['id']).'" class="btn btn-outline-secondary btn-xs">
                             <i class="far fa-eye"></i>

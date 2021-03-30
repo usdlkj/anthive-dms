@@ -13,6 +13,8 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 use Datatables;
 
+use App\Models\MailType;
+
 class MailTypeController extends AppBaseController
 {
     /** @var  MailTypeRepository */
@@ -29,13 +31,27 @@ class MailTypeController extends AppBaseController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request)
+    public function index($projectId, Request $request)
     {
         if ($request->ajax()) {
-            return Datatables::of((new MailTypeDataTable())->get())->make(true);
+            $data = MailType::where('project_id', $projectId);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $action_btn = '<td><div class="btn-group">
+                        <a href="'.route('projects.mailTypes', $row['id']).'" class="btn btn-outline-secondary btn-xs">
+                            <i class="far fa-eye"></i>
+                        </a>
+                        <a href="'.route('projects.mailTypes', $row['id']).'" class="btn btn-outline-warning btn-xs">
+                            <i class="far fa-edit"></i>
+                        </a></div></td>';
+                    return $action_btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
-    
-        return view('mail_types.index');
+
+        return view('mail_types.index')->with('projectId', $projectId);
     }
 
     /**

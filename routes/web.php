@@ -43,7 +43,7 @@ Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentControll
 
 Route::resource('documentFields', App\Http\Controllers\DocumentFieldController::class);
 
-Route::resource('mailTypes', App\Http\Controllers\MailTypeController::class);
+Route::resource('projects.mailTypes', App\Http\Controllers\MailTypeController::class);
 
 Route::resource('mails', App\Http\Controllers\MailController::class);
 

@@ -1,33 +1,68 @@
 @extends('layouts.app')
-@section('title')
-    Mail Types 
-@endsection
-@section('css')
-    <link href="{{ asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
-@endsection
+
 @section('content')
-    <section class="section">
-        <div class="section-header">
-            <h1>Mail Types</h1>
-            <div class="section-header-breadcrumb">
-                <a href="{{ route('mailTypes.create')}}" class="btn btn-primary form-btn">Mail Type <i class="fas fa-plus"></i></a>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Mail Types</h1>
+            </div>
+            <div class="col-sm-6">
+                <a class="btn btn-primary float-right" href="{{ route('projects.mailTypes.create', [$projectId]) }}">
+                    Add New
+                </a>
             </div>
         </div>
-        <div class="section-body">
-            <div class="card">
-                <div class="card-body">
-                    @include('mail_types.table')
-                    @include('mail_types.templates.templates')
+    </div>
+</section>
+
+<div class="content px-3">
+
+    @include('flash::message')
+
+    <div class="clearfix"></div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            @include('mail_types.table')
+
+            <div class="card-footer clearfix float-right">
+                <div class="float-right">
+
                 </div>
             </div>
         </div>
-    </section>
+
+    </div>
+</div>
+
 @endsection
-@section('scripts')
-    <script>
-        let recordsURL = "{{ route('mailTypes.index') }}/";
-    </script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>
-    <script src="{{mix('assets/js/mail_types/mail_types.js')}}"></script>
-@endsection
+
+@push('scripts')
+<script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#mail-types-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('projects.mailTypes.index', [$projectId]) }}",
+        columns: [{
+                data: 'mail_type_code',
+                name: 'mail_type_code'
+            },
+            {
+                data: 'mail_type',
+                name: 'mail_type'
+            },
+            {
+                data: 'is_transmittal',
+                name: 'is_transmittal'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            }
+        ]
+    });
+});
+</script>
+@endpush
