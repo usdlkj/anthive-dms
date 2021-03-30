@@ -45,7 +45,7 @@ Route::resource('documentFields', App\Http\Controllers\DocumentFieldController::
 
 Route::resource('projects.mailTypes', App\Http\Controllers\MailTypeController::class);
 
-Route::resource('mails', App\Http\Controllers\MailController::class);
+Route::resource('projects.mails', App\Http\Controllers\MailController::class);
 
 Route::resource('mailUsers', App\Http\Controllers\MailUserController::class);
 

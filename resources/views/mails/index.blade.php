@@ -1,33 +1,73 @@
 @extends('layouts.app')
-@section('title')
-    Mails 
-@endsection
-@section('css')
-    <link href="{{ asset('assets/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
-@endsection
+
 @section('content')
-    <section class="section">
-        <div class="section-header">
-            <h1>Mails</h1>
-            <div class="section-header-breadcrumb">
-                <a href="{{ route('mails.create')}}" class="btn btn-primary form-btn">Mail <i class="fas fa-plus"></i></a>
-            </div>
-        </div>
-        <div class="section-body">
-            <div class="card">
-                <div class="card-body">
-                    @include('mails.table')
-                    @include('mails.templates.templates')
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-9">
+                    <h1>Mails</h1>
+                </div>
+                <div class="col-sm-3 text-right">
+                    <a class="btn btn-primary"
+                       href="{{ route('projects.mails.create', $projectId) }}">
+                        Add New
+                    </a>
                 </div>
             </div>
         </div>
     </section>
+
+    <div class="content px-3">
+
+        @include('flash::message')
+
+        <div class="clearfix"></div>
+
+        <div class="card">
+            <div class="card-body p-0">
+                @include('mails.table')
+
+                <div class="card-footer clearfix float-right">
+                    <div class="float-right">
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 @endsection
-@section('scripts')
-    <script>
-        let recordsURL = "{{ route('mails.index') }}/";
-    </script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ mix('assets/js/custom/custom-datatable.js') }}"></script>
-    <script src="{{mix('assets/js/mails/mails.js')}}"></script>
-@endsection
+
+@push('scripts')
+<script type="text/javascript">
+$(document).ready(function() {
+    var table = $('#mails-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('projects.mails.index', $projectId) }}",
+        columns: [{
+                data: 'mail_code',
+                name: 'mail_code'
+            },
+            {
+                data: 'mail_type',
+                name: 'mail_type'
+            },
+            {
+                data: 'subject',
+                name: 'subject'
+            },
+            {
+                data: 'updated_at',
+                name: 'updated_at'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            }
+        ]
+    });
+});
+</script>
+@endpush

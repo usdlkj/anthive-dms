@@ -26,6 +26,16 @@
                 </a>
             </li>
             @endcan
+            <li class="nav-item">
+                <a href="{{ route('projects.documents.index', [$projectId]) }}" class="nav-link">
+                    <p>Documents</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('projects.mails.index', [$projectId]) }}" class="nav-link">
+                    <p>Mails</p>
+                </a>
+            </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
