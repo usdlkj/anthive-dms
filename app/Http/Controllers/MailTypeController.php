@@ -91,7 +91,7 @@ class MailTypeController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show($projectId, $id)
     {
         $mailType = $this->mailTypeRepository->find($id);
 
