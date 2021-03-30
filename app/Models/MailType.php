@@ -63,10 +63,8 @@ class MailType extends Model
      * @var array
      */
     public static $rules = [
-        'project_id' => 'required',
         'mail_type' => 'required|string|max:255',
         'mail_type_code' => 'required|string|max:50',
-        'last_mail_number' => 'required|string|max:50',
         'is_transmittal' => 'required|boolean',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',

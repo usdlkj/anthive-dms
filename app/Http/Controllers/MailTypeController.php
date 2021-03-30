@@ -39,10 +39,10 @@ class MailTypeController extends AppBaseController
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
                     $action_btn = '<td><div class="btn-group">
-                        <a href="'.route('projects.mailTypes', $row['id']).'" class="btn btn-outline-secondary btn-xs">
+                        <a href="'.route('projects.mailTypes.show', [$row['project_id'], $row['id']]).'" class="btn btn-outline-secondary btn-xs">
                             <i class="far fa-eye"></i>
                         </a>
-                        <a href="'.route('projects.mailTypes', $row['id']).'" class="btn btn-outline-warning btn-xs">
+                        <a href="'.route('projects.mailTypes.edit', [$row['project_id'], $row['id']]).'" class="btn btn-outline-warning btn-xs">
                             <i class="far fa-edit"></i>
                         </a></div></td>';
                     return $action_btn;
@@ -59,9 +59,9 @@ class MailTypeController extends AppBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($projectId)
     {
-        return view('mail_types.create');
+        return view('mail_types.create')->with('projectId', $projectId);
     }
 
     /**
@@ -71,15 +71,17 @@ class MailTypeController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateMailTypeRequest $request)
+    public function store($projectId, CreateMailTypeRequest $request)
     {
         $input = $request->all();
+        $input['project_id'] = $projectId;
+        $input['last_mail_number'] = 0;
 
         $mailType = $this->mailTypeRepository->create($input);
 
         Flash::success('Mail Type saved successfully.');
 
-        return redirect(route('mailTypes.index'));
+        return redirect(route('projects.mailTypes.index', [$projectId]));
     }
 
     /**
