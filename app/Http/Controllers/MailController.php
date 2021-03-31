@@ -15,7 +15,9 @@ use Datatables;
 
 use DB;
 use App\Models\Mail;
+use App\Models\MailType;
 use App\Models\Project;
+use Illuminate\Support\Facades\Auth;
 
 class MailController extends AppBaseController
 {
@@ -80,15 +82,25 @@ class MailController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateMailRequest $request)
+    public function store($projectId, CreateMailRequest $request)
     {
+        $user = Auth::user();
         $input = $request->all();
+
+        $mailType = MailType::find($input['mail_type']);
+        $newMailNumber = intval($mailType->last_mail_number) + 1;
+        $strMailNumber = strval($newMailNumber);
+        $strMailNumber = str_pad($strMailNumber, 5 - strlen($strMailNumber), '0', STR_PAD_LEFT);
+
+        $input['sender_id'] = $user->id;
+        $input['mail_code'] = $user->company->company_code.'-'.$mailType->mail_type_code.'-'.$strMailNumber;
+        $input['mail_status'] = Mail::MAIL_STATUS_SENT;
 
         $mail = $this->mailRepository->create($input);
 
         Flash::success('Mail saved successfully.');
 
-        return redirect(route('mails.index'));
+        return redirect(route('projects.mails.index', [$projectId]));
     }
 
     /**

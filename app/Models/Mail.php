@@ -35,6 +35,9 @@ class Mail extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
+    const MAIL_STATUS_DRAFT = 1;
+    const MAIL_STATUS_SENT = 2;
+
 
     protected $dates = ['deleted_at'];
 
@@ -63,7 +66,7 @@ class Mail extends Model
         'mail_type_id' => 'integer',
         'sender_id' => 'integer',
         'mail_code' => 'string',
-        'mail_status' => 'boolean',
+        'mail_status' => 'integer',
         'subject' => 'string',
         'message' => 'string'
     ];
@@ -74,17 +77,7 @@ class Mail extends Model
      * @var array
      */
     public static $rules = [
-        'thread_starter_id' => 'nullable',
-        'previous_mail_id' => 'nullable',
-        'mail_type_id' => 'nullable',
-        'sender_id' => 'required',
-        'mail_code' => 'required|string|max:255',
-        'mail_status' => 'required|boolean',
-        'subject' => 'required|string|max:255',
-        'message' => 'nullable|string',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable',
-        'deleted_at' => 'nullable'
+        'subject' => 'required|string|max:255'
     ];
 
     /**
