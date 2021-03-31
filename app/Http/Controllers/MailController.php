@@ -15,6 +15,7 @@ use Datatables;
 
 use DB;
 use App\Models\Mail;
+use App\Models\Project;
 
 class MailController extends AppBaseController
 {
@@ -63,9 +64,13 @@ class MailController extends AppBaseController
      *
      * @return Response
      */
-    public function create()
+    public function create($projectId)
     {
-        return view('mails.create');
+        $project = Project::find($projectId);
+
+        return view('mails.create')
+            ->with('projectId', $projectId)
+            ->with('mailTypes', $project->mailTypes);
     }
 
     /**

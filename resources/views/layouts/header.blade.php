@@ -26,6 +26,7 @@
                 </a>
             </li>
             @endcan
+            @if (isset($projectId))
             <li class="nav-item">
                 <a href="{{ route('projects.documents.index', [$projectId]) }}" class="nav-link">
                     <p>Documents</p>
@@ -36,6 +37,7 @@
                     <p>Mails</p>
                 </a>
             </li>
+            @endif
         </ul>
 
         <ul class="navbar-nav ml-auto">

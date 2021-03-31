@@ -15,6 +15,7 @@ use App\Models\ProjectField;
 use App\Models\Document;
 use App\Models\DocumentField;
 use App\Models\File;
+use Illuminate\Support\Facades\Auth;
 use DB;
 use DataTables;
 
@@ -40,6 +41,13 @@ class DocumentController extends AppBaseController
     {
         if ($request->ajax()) {
             return $this->getDocuments($projectId, $request, false);
+        }
+
+        // set current project id
+        $user = Auth::user();
+        if ($user->current_project_id != $projectId) {
+            $user->current_project_id = $projectId;
+            $user->save();
         }
 
         return view('documents.index')->with('projectId', $projectId);

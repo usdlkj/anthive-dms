@@ -133,4 +133,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(\App\Models\Project::class, 'project_user')->withTimestamps();
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currentProject()
+    {
+        return $this->belongsTo(\App\Models\Project::class, 'current_project_id');
+    }
 }

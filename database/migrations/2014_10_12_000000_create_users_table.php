@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('phone_number')->nullable();
             $table->string('position')->nullable();
             $table->unsignedTinyInteger('role');
+            $table->unsignedBigInteger('current_project_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
