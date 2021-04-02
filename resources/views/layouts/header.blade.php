@@ -5,27 +5,21 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
-            @can('viewAny', \App\Models\Company::class)
             <li class="nav-item">
                 <a href="{{ route('companies.index') }}" class="nav-link">
                     <p>Companies</p>
                 </a>
             </li>
-            @endcan
-            @can('viewAny', \App\Models\Project::class)
             <li class="nav-item">
                 <a href="{{ route('projects.index') }}" class="nav-link">
                     <p>Projects</p>
                 </a>
             </li>
-            @endcan
-            @can('viewAny', \App\Models\File::class)
             <li class="nav-item">
                 <a href="{{ route('files.index') }}" class="nav-link">
                     <p>Files</p>
                 </a>
             </li>
-            @endcan
             @if (isset($projectId))
             <li class="nav-item">
                 <a href="{{ route('projects.documents.index', [$projectId]) }}" class="nav-link">
