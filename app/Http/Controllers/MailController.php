@@ -43,7 +43,7 @@ class MailController extends AppBaseController
                             ->where('project_id', $projectId)
                             ->whereNull('mails.deleted_at')
                             ->join('mail_types', 'mails.mail_type_id', '=', 'mail_types.id')
-                            ->select('mails.*', 'mail_types.mail_type')
+                            ->select('mails.*', 'mail_types.mail_type', 'mail_types.project_id')
                             ->get();
             $data = json_decode(json_encode($mails), true);
             return Datatables::of($data)
