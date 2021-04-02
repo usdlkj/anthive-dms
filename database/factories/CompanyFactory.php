@@ -21,21 +21,27 @@ class CompanyFactory extends Factory
      */
     public function definition()
     {
-        $companyName = $this->faker->company;
-        $companySuffix = $this->faker->companySuffix;
+        while(true) {
+            try {
+                $companyName = $this->faker->company;
+                $companySuffix = $this->faker->companySuffix;
 
-        return [
-            'company_name' => $companyName.' '.$companySuffix,
-            'trading_name' => $companyName,
-            'company_code' => strtoupper(substr($this->faker->unique()->word, 0, 3)),
-            'address' => $this->faker->streetAddress,
-            'city' => $this->faker->city,
-            'post_code' => $this->faker->postcode,
-            'country' => $this->faker->country,
-            'phone_number' => $this->faker->phoneNumber,
-            'email' => $this->faker->companyEmail,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ];
+                return [
+                    'company_name' => $companyName.' '.$companySuffix,
+                    'trading_name' => $companyName,
+                    'company_code' => strtoupper(substr($this->faker->unique()->word, 0, 3)),
+                    'address' => $this->faker->streetAddress,
+                    'city' => $this->faker->city,
+                    'post_code' => $this->faker->postcode,
+                    'country' => $this->faker->country,
+                    'phone_number' => $this->faker->phoneNumber,
+                    'email' => $this->faker->companyEmail,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+
+                break;
+            } catch (Exception $e) {}
+        }
     }
 }

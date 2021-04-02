@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (isset(Auth::user()->current_project_id)) {
+            return view('home')->with('projectId', Auth::user()->current_project_id);
+        }
         return view('home');
     }
 }

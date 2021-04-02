@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\ProjectField;
 use App\Models\SelectValue;
+use App\Models\MailType;
 
 class ProjectSeeder extends Seeder
 {
@@ -55,6 +56,12 @@ class ProjectSeeder extends Seeder
         $field = $this->createField($project->id, 'disc', ProjectField::FIELD_MULTI_SELECT, 'Discipline', true, false, 7);
         $this->addValue($field->id, 'ARC', 'Architectural');
         $this->addValue($field->id, 'STR', 'Structural');
+
+        $this->createMailType($project->id, 'LTR', 'Letter', false);
+        $this->createMailType($project->id, 'RFI', 'Request for Information', false);
+        $this->createMailType($project->id, 'RFP', 'Request for Proposal', false);
+        $this->createMailType($project->id, 'TRA', 'Transmittal', true);
+        $this->createMailType($project->id, 'APR', 'Request for Approval', true);
     }
 
     protected function createField($projectId, $fieldCode, $fieldType, $fieldText, $visible, $mandatory, $sequence)
@@ -85,5 +92,20 @@ class ProjectSeeder extends Seeder
         $value->save();
 
         return $value;
+    }
+
+    protected function createMailType($projectId, $mailTypeCode, $mailTypeText, $isTransmittal)
+    {
+        $mailType = new MailType;
+        $mailType['project_id'] = $projectId;
+        $mailType['mail_type_code'] = $mailTypeCode;
+        $mailType['mail_type'] = $mailTypeText;
+        $mailType['is_transmittal'] = $isTransmittal;
+        $mailType['last_mail_number'] = '0';
+        $mailType['created_at'] = now();
+        $mailType['updated_at'] = now();
+        $mailType->save();
+
+        return $mailType;
     }
 }

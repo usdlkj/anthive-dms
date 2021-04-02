@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\Project;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -21,9 +22,13 @@ class DatabaseSeeder extends Seeder
             ProjectSeeder::class
         ]);
 
-        // Company::factory()
-        //             ->count(17)
-        //             ->has(User::factory()->count(3))
-        //             ->create();
+        $project = Project::find(1);
+
+        Company::factory()
+                    ->count(5)
+                    ->has(User::factory()
+                                ->count(5)
+                                ->hasAttached($project))
+                    ->create();
     }
 }

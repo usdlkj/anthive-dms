@@ -18,6 +18,7 @@ class CreateMailUserTable extends Migration
             $table->foreign('mail_id')->references('id')->on('mails');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedTinyInteger('recipient_type');
         });
     }
 

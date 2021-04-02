@@ -37,3 +37,17 @@
         </div>
     </div>
 @endsection
+
+@section('third_party_stylesheets')
+<link href="/vendor/select2/select2.min.css" rel="stylesheet" />
+@endsection
+
+@push('scripts')
+<script src="/vendor/select2/select2.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#recipient_to').select2();
+});
+</script>
+@endpush

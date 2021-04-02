@@ -16,6 +16,7 @@ use Datatables;
 use DB;
 use App\Models\Mail;
 use App\Models\MailType;
+use App\Models\MailUser;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,6 +73,7 @@ class MailController extends AppBaseController
 
         return view('mails.create')
             ->with('projectId', $projectId)
+            ->with('projectUsers', $project->users)
             ->with('mailTypes', $project->mailTypes);
     }
 
@@ -84,23 +86,49 @@ class MailController extends AppBaseController
      */
     public function store($projectId, CreateMailRequest $request)
     {
-        $user = Auth::user();
-        $input = $request->all();
+        try {
+            $user = Auth::user();
+            $input = $request->all();
 
-        $mailType = MailType::find($input['mail_type']);
-        $newMailNumber = intval($mailType->last_mail_number) + 1;
-        $strMailNumber = strval($newMailNumber);
-        $strMailNumber = str_pad($strMailNumber, 5 - strlen($strMailNumber), '0', STR_PAD_LEFT);
+            // begin transaction
+            DB::beginTransaction();
 
-        $input['sender_id'] = $user->id;
-        $input['mail_code'] = $user->company->company_code.'-'.$mailType->mail_type_code.'-'.$strMailNumber;
-        $input['mail_status'] = Mail::MAIL_STATUS_SENT;
+            $mailType = MailType::find($input['mail_type']);
+            $newMailNumber = intval($mailType->last_mail_number) + 1;
+            $strMailNumber = strval($newMailNumber);
+            $strMailNumber = str_pad($strMailNumber, 5 - strlen($strMailNumber), '0', STR_PAD_LEFT);
 
-        $mail = $this->mailRepository->create($input);
+            $input['sender_id'] = $user->id;
+            $input['mail_type_id'] = $input['mail_type'];
+            $input['mail_code'] = $user->company->company_code.'-'.$mailType->mail_type_code.'-'.$strMailNumber;
+            $input['mail_status'] = Mail::MAIL_STATUS_SENT;
 
-        Flash::success('Mail saved successfully.');
+            $mail = $this->mailRepository->create($input);
 
-        return redirect(route('projects.mails.index', [$projectId]));
+            foreach ($input['recipient_to'] as $recipientTo) {
+                $mailUser = new MailUser;
+                $mailUser->mail_id = $mail->id;
+                $mailUser->user_id = $recipientTo;
+                $mailUser->recipient_type = Mail::MAIL_RECIPIENT_TO;
+                $mailUser->save();
+            }
+
+            // commit transaction
+            DB::commit();
+
+            Flash::success('Mail saved successfully.');
+
+            return redirect(route('projects.mails.index', [$projectId]));
+        }
+        catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollBack();
+
+            Flash::error('Unable to save document.');
+
+            return redirect(route('projects.mails.index', [$projectId]));
+        }
     }
 
     /**

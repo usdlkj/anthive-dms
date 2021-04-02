@@ -37,11 +37,12 @@ class Mail extends Model
 
     const MAIL_STATUS_DRAFT = 1;
     const MAIL_STATUS_SENT = 2;
-
+    
+    const MAIL_RECIPIENT_TO = 1;
+    const MAIL_RECIPIENT_CC = 2;
+    const MAIL_RECIPIENT_BCC = 3;
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'thread_starter_id',
