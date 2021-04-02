@@ -1,47 +1,41 @@
-<!-- Thread Starter Id Field -->
-<div class="form-group">
-    {!! Form::label('thread_starter_id', 'Thread Starter Id:') !!}
-    <p>{{ $mail->thread_starter_id }}</p>
-</div>
-
-<!-- Previous Mail Id Field -->
-<div class="form-group">
-    {!! Form::label('previous_mail_id', 'Previous Mail Id:') !!}
-    <p>{{ $mail->previous_mail_id }}</p>
-</div>
-
-<!-- Mail Type Id Field -->
-<div class="form-group">
+<!-- Mail Type Field -->
+<div class="form-group col-sm-6">
     {!! Form::label('mail_type_id', 'Mail Type Id:') !!}
-    <p>{{ $mail->mail_type_id }}</p>
+    <p>{{ $mail->mailType->mail_type }}</p>
 </div>
 
-<!-- Sender Id Field -->
-<div class="form-group">
-    {!! Form::label('sender_id', 'Sender Id:') !!}
-    <p>{{ $mail->sender_id }}</p>
+<!-- Sender Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('sender_id', 'Sender:') !!}
+    <p>{{ $mail->sender->name }}</p>
 </div>
 
 <!-- Mail Code Field -->
-<div class="form-group">
+<div class="form-group col-sm-6">
     {!! Form::label('mail_code', 'Mail Code:') !!}
     <p>{{ $mail->mail_code }}</p>
 </div>
 
 <!-- Mail Status Field -->
-<div class="form-group">
+<div class="form-group col-sm-6">
     {!! Form::label('mail_status', 'Mail Status:') !!}
-    <p>{{ $mail->mail_status }}</p>
+    <p>
+    @if($mail->mail_status == \App\Models\Mail::MAIL_STATUS_DRAFT)
+    Draft
+    @elseif ($mail->mail_status == \App\Models\Mail::MAIL_STATUS_SENT)
+    Sent
+    @endif
+    </p>
 </div>
 
 <!-- Subject Field -->
-<div class="form-group">
+<div class="form-group col-sm-6">
     {!! Form::label('subject', 'Subject:') !!}
     <p>{{ $mail->subject }}</p>
 </div>
 
 <!-- Message Field -->
-<div class="form-group">
+<div class="form-group col-sm-12">
     {!! Form::label('message', 'Message:') !!}
     <p>{{ $mail->message }}</p>
 </div>

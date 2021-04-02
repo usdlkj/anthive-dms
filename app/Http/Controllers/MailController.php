@@ -138,17 +138,19 @@ class MailController extends AppBaseController
      *
      * @return Response
      */
-    public function show($id)
+    public function show($projectId, $id)
     {
         $mail = $this->mailRepository->find($id);
 
         if (empty($mail)) {
             Flash::error('Mail not found');
 
-            return redirect(route('mails.index'));
+            return redirect(route('projects.mails.index', [$projectId]));
         }
 
-        return view('mails.show')->with('mail', $mail);
+        return view('mails.show')
+            ->with('mail', $mail)
+            ->with('projectId', $projectId);
     }
 
     /**
