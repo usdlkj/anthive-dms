@@ -27,9 +27,18 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ route('projects.mails.index', [$projectId]) }}" class="nav-link">
-                    <p>Mails</p>
-                </a>
+                <div class="dropdown">
+                    <a class="nav-link" href="#" role="button" id="mail-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mails
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="mails">
+                        <a class="dropdown-item" href="{{ route('projects.mails.inbox', [$projectId]) }}">Inbox</a>
+                        <a class="dropdown-item" href="#">Sent Mail</a>
+                        <a class="dropdown-item" href="#">Draft</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">New Mail</a>
+                    </div>
+                </div>
             </li>
             @endif
         </ul>
