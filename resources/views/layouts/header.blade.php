@@ -33,7 +33,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="mails">
                         <a class="dropdown-item" href="{{ route('projects.mails.inbox', [$projectId]) }}">Inbox</a>
-                        <a class="dropdown-item" href="#">Sent Mail</a>
+                        <a class="dropdown-item" href="{{ route('projects.mails.sent', [$projectId]) }}">Sent Mail</a>
                         <a class="dropdown-item" href="#">Draft</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">New Mail</a>

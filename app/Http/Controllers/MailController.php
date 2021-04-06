@@ -92,7 +92,39 @@ class MailController extends AppBaseController
                 ->make(true);
         }
     
-        return view('mails.index')->with('projectId', $projectId);
+        return view('mails.inbox')->with('projectId', $projectId);
+    }
+
+    /**
+     * Get all mails that the current user has sent
+     * 
+     * @return Response
+     */
+    public function sent($projectId, Request $request)
+    {
+        if ($request->ajax()) {
+            $mails = DB::table('mails')
+                            ->where('project_id', $projectId)
+                            ->whereNull('mails.deleted_at')
+                            ->where('sender_id', Auth::user()->id)
+                            ->join('mail_types', 'mails.mail_type_id', '=', 'mail_types.id')
+                            ->select('mails.*', 'mail_types.mail_type', 'mail_types.project_id')
+                            ->get();
+            $data = json_decode(json_encode($mails), true);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $action_btn = '<td><div class="btn-group">
+                        <a href="'.route('projects.mails.show', [$row['project_id'], $row['id']]).'" class="btn btn-outline-secondary btn-xs">
+                            <i class="far fa-eye"></i>
+                        </a></div></td>';
+                    return $action_btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    
+        return view('mails.sent')->with('projectId', $projectId);
     }
 
     /**

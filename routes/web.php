@@ -35,8 +35,7 @@ Route::resource('projects.users', App\Http\Controllers\ProjectUserController::cl
 
 Route::resource('files', App\Http\Controllers\FileController::class);
 
-Route::get('/projects/{projectId}/documents/showAll', [App\Http\Controllers\DocumentController::class, 'showAll'])
-        ->name('projects.documents.showAll');
+Route::get('/projects/{projectId}/documents/showAll', [App\Http\Controllers\DocumentController::class, 'showAll'])->name('projects.documents.showAll');
 Route::resource('projects.documents', App\Http\Controllers\DocumentController::class);
 
 Route::resource('companyDocuments', App\Http\Controllers\CompanyDocumentController::class);
@@ -45,8 +44,8 @@ Route::resource('documentFields', App\Http\Controllers\DocumentFieldController::
 
 Route::resource('projects.mailTypes', App\Http\Controllers\MailTypeController::class);
 
-Route::get('/projects/{projectId}/mails/inbox', [App\Http\Controllers\MailController::class, 'inbox'])
-        ->name('projects.mails.inbox');
+Route::get('/projects/{projectId}/mails/inbox', [App\Http\Controllers\MailController::class, 'inbox'])->name('projects.mails.inbox');
+Route::get('/projects/{projectId}/mails/sent', [App\Http\Controllers\MailController::class, 'sent'])->name('projects.mails.sent');
 Route::resource('projects.mails', App\Http\Controllers\MailController::class);
 
 Route::resource('mailUsers', App\Http\Controllers\MailUserController::class);
