@@ -15,7 +15,7 @@
 
         @include('adminlte-templates::common.errors')
 
-        <div class="card">
+        <div class="card col-sm-6">
 
             {!! Form::open(['route' => ['projects.mails.store', $projectId]]) !!}
 
