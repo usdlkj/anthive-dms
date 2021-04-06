@@ -59,7 +59,9 @@ class MailController extends AppBaseController
                 ->make(true);
         }
     
-        return view('mails.index')->with('projectId', $projectId);
+        return view('mails.index')
+            ->with('projectId', $projectId)
+            ->with('request', $request);
     }
 
     /**
@@ -93,7 +95,9 @@ class MailController extends AppBaseController
                 ->make(true);
         }
     
-        return view('mails.inbox')->with('projectId', $projectId);
+        return view('mails.index')
+            ->with('projectId', $projectId)
+            ->with('request', $request);
     }
 
     /**
@@ -126,7 +130,9 @@ class MailController extends AppBaseController
                 ->make(true);
         }
     
-        return view('mails.sent')->with('projectId', $projectId);
+        return view('mails.index')
+            ->with('projectId', $projectId)
+            ->with('request', $request);
     }
 
     /**
@@ -159,7 +165,9 @@ class MailController extends AppBaseController
                 ->make(true);
         }
     
-        return view('mails.draft')->with('projectId', $projectId);
+        return view('mails.index')
+            ->with('projectId', $projectId)
+            ->with('request', $request);
     }
 
     /**

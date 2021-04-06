@@ -10,7 +10,7 @@
                 <div class="col-sm-3 text-right">
                     <a class="btn btn-primary"
                        href="{{ route('projects.mails.create', $projectId) }}">
-                        Add New
+                        New Mail
                     </a>
                 </div>
             </div>
@@ -45,7 +45,13 @@ $(document).ready(function() {
     var table = $('#mails-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('projects.mails.index', $projectId) }}",
+        @if ($request->route()->named('projects.mails.inbox'))
+        ajax: "{{ route('projects.mails.inbox', $projectId) }}",
+        @elseif ($request->route()->named('projects.mails.sent'))
+        ajax: "{{ route('projects.mails.sent', $projectId) }}",
+        @else
+        ajax: "{{ route('projects.mails.draft', $projectId) }}",
+        @endif
         columns: [{
                 data: 'mail_code',
                 name: 'mail_code'
