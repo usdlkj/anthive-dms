@@ -46,6 +46,7 @@ Route::resource('projects.mailTypes', App\Http\Controllers\MailTypeController::c
 
 Route::get('/projects/{projectId}/mails/inbox', [App\Http\Controllers\MailController::class, 'inbox'])->name('projects.mails.inbox');
 Route::get('/projects/{projectId}/mails/sent', [App\Http\Controllers\MailController::class, 'sent'])->name('projects.mails.sent');
+Route::get('/projects/{projectId}/mails/draft', [App\Http\Controllers\MailController::class, 'draft'])->name('projects.mails.draft');
 Route::resource('projects.mails', App\Http\Controllers\MailController::class);
 
 Route::resource('mailUsers', App\Http\Controllers\MailUserController::class);
